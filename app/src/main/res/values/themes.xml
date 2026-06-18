@@ -1,0 +1,24 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Base.Theme.AgroCare" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Customize your light theme here. -->
+        <item name="colorPrimary">@color/primary_green</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorPrimaryContainer">@color/secondary_green</item>
+        <item name="colorOnPrimaryContainer">@color/primary_dark_green</item>
+
+        <item name="colorSecondary">@color/secondary_green</item>
+        <item name="colorOnSecondary">@color/primary_dark_green</item>
+
+        <item name="android:windowBackground">@color/background_light</item>
+        <item name="android:statusBarColor">@color/primary_green</item>
+    </style>
+
+    <style name="Theme.AgroCare" parent="Base.Theme.AgroCare" />
+
+    <!-- Style untuk Rounding Image Detail -->
+    <style name="RoundedCornersImage">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">12dp</item>
+    </style>
+</resources>

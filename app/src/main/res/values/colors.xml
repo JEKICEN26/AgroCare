@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Brand Colors -->
+    <color name="primary_green">#388E3C</color>
+    <color name="secondary_green">#4CAF50</color>
+    <color name="primary_dark_green">#2E7D32</color>
+    <color name="background_light">#F5F6F8</color>
+
+    <color name="colorPrimary">#388E3C</color>
+    <color name="colorSecondary">#4CAF50</color>
+    <color name="colorSurface">#F5F6F8</color>
+    <color name="colorAccentOrange">#FF9800</color>
+
+    <!-- Text Colors -->
+    <color name="text_primary">#1A1A1A</color>
+    <color name="text_secondary">#757575</color>
+    <color name="colorTextPrimary">#1A1A1A</color>
+    <color name="colorTextSecondary">#757575</color>
+
+    <!-- Button & UI Helper -->
+    <color name="colorButtonLight">#E8F5E9</color>
+    <color name="white">#FFFFFF</color>
+    <color name="red_notification">#F44336</color>
+    <color name="black">#FF000000</color>
+</resources>

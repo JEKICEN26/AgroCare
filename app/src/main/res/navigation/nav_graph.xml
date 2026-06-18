@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/navigation_home">
+
+    <fragment
+        android:id="@+id/navigation_home"
+        android:name="com.zaky.agrocare.ui.home.HomeFragment"
+        android:label="Beranda"
+        tools:layout="@layout/fragment_home" />
+
+    <fragment
+        android:id="@+id/navigation_insight"
+        android:name="com.zaky.agrocare.ui.education.EducationModuleFragment"
+        android:label="Insight"
+        tools:layout="@layout/fragment_education_module" />
+
+    <fragment
+        android:id="@+id/navigation_notifications"
+        android:name="com.zaky.agrocare.ui.home.HomeFragment"
+        android:label="Notifikasi" />
+
+    <fragment
+        android:id="@+id/navigation_profile"
+        android:name="com.zaky.agrocare.ui.profile.ProfileFragment"
+        android:label="Profil Saya"
+        tools:layout="@layout/fragment_profile" />
+
+    <fragment
+        android:id="@+id/navigation_education_module"
+        android:name="com.zaky.agrocare.ui.education.EducationModuleFragment"
+        android:label="Modul Edukasi"
+        tools:layout="@layout/fragment_education_module" />
+
+    <fragment
+        android:id="@+id/navigation_product_detail"
+        android:name="com.zaky.agrocare.ui.detail.ProductDetailFragment"
+        android:label="Detail Produk"
+        tools:layout="@layout/fragment_product_detail">
+        <argument
+            android:name="productId"
+            app:argType="integer" />
+        <argument
+            android:name="productName"
+            app:argType="string" />
+        <argument
+            android:name="productPrice"
+            app:argType="string" />
+        <argument
+            android:name="productImage"
+            app:argType="string" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_product_category"
+        android:name="com.zaky.agrocare.ui.category.ProductCategoryFragment"
+        android:label="{title}"
+        tools:layout="@layout/fragment_product_category">
+        <argument
+            android:name="title"
+            app:argType="string" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_checkout"
+        android:name="com.zaky.agrocare.ui.checkout.CheckoutFragment"
+        android:label="Checkout"
+        tools:layout="@layout/fragment_checkout" />
+
+</navigation>
