@@ -69,4 +69,10 @@
         android:label="Checkout"
         tools:layout="@layout/fragment_checkout" />
 
+    <fragment
+        android:id="@+id/navigation_search"
+        android:name="com.zaky.agrocare.ui.search.SearchFragment"
+        android:label="Pencarian"
+        tools:layout="@layout/fragment_search" />
+
 </navigation>

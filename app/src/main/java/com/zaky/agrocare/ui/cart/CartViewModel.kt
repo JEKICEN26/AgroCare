@@ -65,4 +65,11 @@ class CartViewModel : ViewModel() {
     fun clearCart() {
         _cartItems.value = emptyList()
     }
+
+    private val _searchQuery = MutableLiveData<String>("")
+    val searchQuery: LiveData<String> = _searchQuery
+
+    fun setSearchQuery(query: String) {
+        _searchQuery.value = query
+    }
 }

@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
+
 import com.zaky.agrocare.databinding.ActivityMainBinding
 import com.zaky.agrocare.ui.cart.CartBottomSheetFragment
 import com.zaky.agrocare.ui.cart.CartViewModel
@@ -35,9 +36,16 @@ class MainActivity : AppCompatActivity() {
             when (destination.id) {
                 R.id.navigation_checkout, R.id.navigation_product_detail -> {
                     binding.bottomNav.visibility = View.GONE
+                    binding.topBar.visibility = View.VISIBLE
+                }
+                R.id.navigation_search -> {
+                    // Sembunyikan topbar dan bottomnav saat di search overlay
+                    binding.bottomNav.visibility = View.GONE
+                    binding.topBar.visibility = View.GONE
                 }
                 else -> {
                     binding.bottomNav.visibility = View.VISIBLE
+                    binding.topBar.visibility = View.VISIBLE
                 }
             }
         }
@@ -56,6 +64,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupTopBarActions() {
+        binding.etSearch.setOnClickListener {
+            // Karena kita menggunakan setupWithNavController, cara paling aman navigasi adalah melalui NavController langsung
+            val navController = (supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment).navController
+            navController.navigate(R.id.navigation_search)
+        }
+
         binding.btnCart.setOnClickListener {
             val cartBottomSheet = CartBottomSheetFragment()
             cartBottomSheet.show(supportFragmentManager, "CartBottomSheet")
