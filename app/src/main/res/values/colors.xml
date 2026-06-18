@@ -11,11 +11,20 @@
     <color name="colorSurface">#F5F6F8</color>
     <color name="colorAccentOrange">#FF9800</color>
 
+    <!-- UI Icon Colors -->
+    <color name="icon_blue_book">#81D4FA</color>
+    <color name="icon_green_plant">#4CAF50</color>
+    <color name="icon_brown_sack">#8D6E63</color>
+    <color name="icon_warm_orange">#FF9800</color>
+    <color name="icon_brass_yellow">#FBC02D</color>
+    <color name="icon_blue_grey">#607D8B</color>
+
     <!-- Text Colors -->
     <color name="text_primary">#1A1A1A</color>
     <color name="text_secondary">#757575</color>
     <color name="colorTextPrimary">#1A1A1A</color>
     <color name="colorTextSecondary">#757575</color>
+    <color name="text_dark_grey">#424242</color>
 
     <!-- Button & UI Helper -->
     <color name="colorButtonLight">#E8F5E9</color>
