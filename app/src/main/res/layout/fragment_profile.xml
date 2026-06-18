@@ -129,22 +129,41 @@
                     android:layout_marginTop="20dp"
                     android:orientation="horizontal">
 
-                    <!-- Status Items (Simplified for brevity) -->
-                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center" android:orientation="vertical">
-                        <ImageView android:layout_width="24dp" android:layout_height="24dp" android:src="@android:drawable/ic_menu_recent_history" app:tint="@color/colorTextSecondary" />
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="8dp" android:text="Belum Bayar" android:textSize="10sp" android:gravity="center"/>
+                    <!-- Status Items with Badges -->
+                    <LinearLayout android:id="@+id/llStatusUnpaid" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center" android:orientation="vertical">
+                        <FrameLayout android:layout_width="wrap_content" android:layout_height="wrap_content">
+                            <ImageView android:id="@+id/ivStatusUnpaid" android:layout_width="28dp" android:layout_height="28dp" android:src="@android:drawable/ic_menu_recent_history" android:padding="2dp" app:tint="@color/colorTextSecondary" />
+                            <TextView android:id="@+id/badgeUnpaid" android:layout_width="16dp" android:layout_height="16dp" android:layout_gravity="top|end" android:background="@drawable/bg_badge_red" android:gravity="center" android:text="1" android:textColor="@android:color/white" android:textSize="9sp" android:textStyle="bold" android:visibility="visible" />
+                        </FrameLayout>
+                        <TextView android:id="@+id/tvLabelUnpaid" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="6dp" android:text="Belum Bayar" android:textSize="10sp" android:gravity="center" />
+                        <TextView android:id="@+id/tvSubLabelUnpaid" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="1 Pesanan" android:textColor="@color/colorPrimary" android:textSize="8sp" android:visibility="visible" />
                     </LinearLayout>
-                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center" android:orientation="vertical">
-                        <ImageView android:layout_width="24dp" android:layout_height="24dp" android:src="@android:drawable/ic_menu_send" app:tint="@color/colorTextSecondary" />
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="8dp" android:text="Dikemas" android:textSize="10sp" android:gravity="center" />
+                    
+                    <LinearLayout android:id="@+id/llStatusPacked" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center" android:orientation="vertical">
+                        <FrameLayout android:layout_width="wrap_content" android:layout_height="wrap_content">
+                            <ImageView android:id="@+id/ivStatusPacked" android:layout_width="28dp" android:layout_height="28dp" android:src="@android:drawable/ic_menu_send" android:padding="2dp" app:tint="@color/colorTextSecondary" />
+                            <TextView android:id="@+id/badgePacked" android:layout_width="16dp" android:layout_height="16dp" android:layout_gravity="top|end" android:background="@drawable/bg_badge_red" android:gravity="center" android:text="0" android:textColor="@android:color/white" android:textSize="9sp" android:textStyle="bold" android:visibility="gone" />
+                        </FrameLayout>
+                        <TextView android:id="@+id/tvLabelPacked" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="6dp" android:text="Dikemas" android:textSize="10sp" android:gravity="center" />
+                        <TextView android:id="@+id/tvSubLabelPacked" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="0 Pesanan" android:textColor="@color/colorPrimary" android:textSize="8sp" android:visibility="invisible" />
                     </LinearLayout>
-                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center" android:orientation="vertical">
-                        <ImageView android:layout_width="24dp" android:layout_height="24dp" android:src="@android:drawable/ic_dialog_map" app:tint="@color/colorTextSecondary" />
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="8dp" android:text="Dikirim" android:textSize="10sp" android:gravity="center" />
+                    
+                    <LinearLayout android:id="@+id/llStatusSent" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center" android:orientation="vertical">
+                        <FrameLayout android:layout_width="wrap_content" android:layout_height="wrap_content">
+                            <ImageView android:id="@+id/ivStatusSent" android:layout_width="28dp" android:layout_height="28dp" android:src="@android:drawable/ic_dialog_map" android:padding="2dp" app:tint="@color/colorTextSecondary" />
+                            <TextView android:id="@+id/badgeSent" android:layout_width="16dp" android:layout_height="16dp" android:layout_gravity="top|end" android:background="@drawable/bg_badge_red" android:gravity="center" android:text="0" android:textColor="@android:color/white" android:textSize="9sp" android:textStyle="bold" android:visibility="gone" />
+                        </FrameLayout>
+                        <TextView android:id="@+id/tvLabelSent" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="6dp" android:text="Dikirim" android:textSize="10sp" android:gravity="center" />
+                        <TextView android:id="@+id/tvSubLabelSent" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="0 Pesanan" android:textColor="@color/colorPrimary" android:textSize="8sp" android:visibility="invisible" />
                     </LinearLayout>
-                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center" android:orientation="vertical">
-                        <ImageView android:layout_width="24dp" android:layout_height="24dp" android:src="@android:drawable/btn_star_big_on" app:tint="@color/colorTextSecondary" />
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="8dp" android:text="Beri Nilai" android:textSize="10sp" android:gravity="center" />
+                    
+                    <LinearLayout android:id="@+id/llStatusRate" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center" android:orientation="vertical">
+                        <FrameLayout android:layout_width="wrap_content" android:layout_height="wrap_content">
+                            <ImageView android:id="@+id/ivStatusRate" android:layout_width="28dp" android:layout_height="28dp" android:src="@android:drawable/btn_star_big_on" android:padding="2dp" app:tint="@color/colorTextSecondary" />
+                            <TextView android:id="@+id/badgeRate" android:layout_width="16dp" android:layout_height="16dp" android:layout_gravity="top|end" android:background="@drawable/bg_badge_red" android:gravity="center" android:text="0" android:textColor="@android:color/white" android:textSize="9sp" android:textStyle="bold" android:visibility="gone" />
+                        </FrameLayout>
+                        <TextView android:id="@+id/tvLabelRate" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="6dp" android:text="Beri Nilai" android:textSize="10sp" android:gravity="center" />
+                        <TextView android:id="@+id/tvSubLabelRate" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="0 Pesanan" android:textColor="@color/colorPrimary" android:textSize="8sp" android:visibility="invisible" />
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>

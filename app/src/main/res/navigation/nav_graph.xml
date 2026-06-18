@@ -31,8 +31,14 @@
     <fragment
         android:id="@+id/navigation_education_module"
         android:name="com.zaky.agrocare.ui.education.EducationModuleFragment"
-        android:label="Modul Edukasi"
+        android:label="Insight"
         tools:layout="@layout/fragment_education_module" />
+
+    <fragment
+        android:id="@+id/navigation_video_education"
+        android:name="com.zaky.agrocare.ui.video.VideoEducationFragment"
+        android:label="Modul Edukasi"
+        tools:layout="@layout/fragment_video_education" />
 
     <fragment
         android:id="@+id/navigation_product_detail"

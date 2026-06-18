@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background_light">
+    android:background="@color/colorSurface">
 
     <LinearLayout
         android:id="@+id/header"
@@ -12,6 +12,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="16dp"
+        android:background="@color/colorPrimary"
         app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
@@ -28,14 +29,14 @@
                 android:layout_height="24dp"
                 android:src="@android:drawable/ic_menu_revert"
                 android:rotation="180"
-                app:tint="@color/text_primary" />
+                app:tint="@color/white" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:text="Kembali"
-                android:textColor="@color/text_primary"
+                android:textColor="@color/white"
                 android:textSize="16sp" />
         </LinearLayout>
 
@@ -43,8 +44,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="Grafik Harga Komoditas"
-            android:textColor="@color/text_primary"
+            android:text="Video Edukasi Bertani"
+            android:textColor="@color/white"
             android:textSize="26sp"
             android:textStyle="bold" />
             
@@ -52,49 +53,20 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:text="Sumber: Simulasi Data BPS"
-            android:textColor="@color/text_secondary"
-            android:textSize="12sp" />
-            
-        <Spinner
-            android:id="@+id/spinnerCommodity"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:layout_marginTop="16dp"
-            android:background="@android:drawable/btn_dropdown" />
+            android:text="Pelajari teknik pertanian dari para ahli"
+            android:textColor="#E0E0E0"
+            android:textSize="14sp" />
     </LinearLayout>
 
-    <com.google.android.material.card.MaterialCardView
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvVideoModules"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_margin="16dp"
-        app:cardCornerRadius="16dp"
-        app:cardElevation="4dp"
+        android:clipToPadding="false"
+        android:padding="16dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/header"
-        app:layout_constraintBottom_toBottomOf="parent">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:padding="16dp">
-
-            <TextView
-                android:id="@+id/tvChartTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Pergerakan Harga (6 Bulan Terakhir)"
-                android:textColor="@color/text_primary"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                android:layout_marginBottom="16dp"/>
-
-            <com.github.mikephil.charting.charts.LineChart
-                android:id="@+id/lineChart"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-                
-        </LinearLayout>
-    </com.google.android.material.card.MaterialCardView>
+        tools:listitem="@layout/item_video_module" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
