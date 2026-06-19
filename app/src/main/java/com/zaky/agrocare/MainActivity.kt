@@ -76,7 +76,8 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.btnChat.setOnClickListener {
-            // Aksi buka chat
+            val navController = (supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment).navController
+            navController.navigate(R.id.navigation_chat_list)
         }
     }
 }

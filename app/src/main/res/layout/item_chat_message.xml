@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingHorizontal="16dp"
+    android:paddingVertical="4dp">
+
+    <!-- Container untuk pesan dari User (Kanan) -->
+    <LinearLayout
+        android:id="@+id/llUserMessage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:orientation="vertical"
+        android:visibility="visible">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_chat_user"
+            android:paddingHorizontal="16dp"
+            android:paddingVertical="12dp">
+
+            <TextView
+                android:id="@+id/tvUserMessage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Pesan dari user"
+                android:textColor="@android:color/white"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tvUserTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginTop="4dp"
+            android:text="10:00"
+            android:textColor="#888888"
+            android:textSize="10sp" />
+    </LinearLayout>
+
+    <!-- Container untuk pesan dari Mitra/Penjual (Kiri) -->
+    <LinearLayout
+        android:id="@+id/llMitraMessage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_chat_mitra"
+            android:paddingHorizontal="16dp"
+            android:paddingVertical="12dp">
+
+            <TextView
+                android:id="@+id/tvMitraMessage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Pesan dari mitra"
+                android:textColor="#333333"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tvMitraTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:layout_marginTop="4dp"
+            android:text="10:01"
+            android:textColor="#888888"
+            android:textSize="10sp" />
+    </LinearLayout>
+
+</LinearLayout>

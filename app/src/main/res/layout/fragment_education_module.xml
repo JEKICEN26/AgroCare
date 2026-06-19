@@ -14,30 +14,16 @@
         android:padding="16dp"
         app:layout_constraintTop_toTopOf="parent">
 
-        <LinearLayout
+        <ImageView
             android:id="@+id/btnBack"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:padding="8dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
             android:clickable="true"
             android:focusable="true"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:src="@android:drawable/ic_menu_revert"
-                android:rotation="180"
-                app:tint="@color/text_primary" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:text="Kembali"
-                android:textColor="@color/text_primary"
-                android:textSize="16sp" />
-        </LinearLayout>
+            android:src="@drawable/ic_arrow_back"
+            app:tint="@color/text_primary" />
 
         <TextView
             android:layout_width="wrap_content"

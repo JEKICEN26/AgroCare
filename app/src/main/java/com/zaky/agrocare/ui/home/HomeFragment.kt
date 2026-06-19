@@ -74,7 +74,7 @@ class HomeFragment : Fragment() {
 
     private fun setupMenuListeners() {
         binding.menuEdukasi.setOnClickListener {
-            findNavController().navigate(R.id.navigation_education_module)
+            findNavController().navigate(R.id.navigation_video_education)
         }
 
         binding.menuBibit.setOnClickListener {

@@ -57,6 +57,12 @@ class ProductDetailFragment : Fragment() {
             findNavController().navigateUp()
         }
 
+        binding.btnChatMitra.setOnClickListener {
+            val mitraName = binding.tvMitraName.text.toString()
+            val action = ProductDetailFragmentDirections.actionDetailToChat(mitraName)
+            findNavController().navigate(action)
+        }
+
         binding.btnAddToCart.setOnClickListener {
             // Konversi harga String (Rp 12.500) ke Int (12500)
             val cleanPrice = args.productPrice

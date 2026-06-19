@@ -10,7 +10,8 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:clipToPadding="false"
-        app:layout_constraintBottom_toTopOf="@+id/btnAddToCart"
+        android:paddingBottom="24dp"
+        app:layout_constraintBottom_toTopOf="@+id/bottomActionLayout"
         app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
@@ -20,31 +21,16 @@
             android:padding="16dp">
 
             <!-- Tombol Kembali -->
-            <LinearLayout
+            <ImageView
                 android:id="@+id/btnBack"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:padding="8dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
                 android:clickable="true"
                 android:focusable="true"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:paddingVertical="8dp">
-
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:src="@android:drawable/ic_menu_revert"
-                    app:tint="@color/colorTextPrimary" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:text="Kembali"
-                    android:textColor="@color/colorTextPrimary"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
-            </LinearLayout>
+                android:src="@drawable/ic_arrow_back"
+                app:tint="@color/colorTextPrimary" />
 
             <!-- Gambar Produk -->
             <com.google.android.material.imageview.ShapeableImageView
@@ -121,6 +107,7 @@
                         android:textColor="@color/colorTextSecondary" />
 
                     <TextView
+                        android:id="@+id/tvMitraName"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Tani Makmur Jaya"
@@ -212,22 +199,40 @@
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 
-    <!-- Sticky Button -->
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btnAddToCart"
+    <!-- Sticky Button Layout -->
+    <LinearLayout
+        android:id="@+id/bottomActionLayout"
         android:layout_width="match_parent"
-        android:layout_height="56dp"
+        android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        android:backgroundTint="#2E7D32"
-        android:text="Tambah ke Keranjang"
-        android:textAllCaps="false"
-        android:textColor="@color/white"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        app:cornerRadius="12dp"
-        app:icon="@android:drawable/ic_menu_add"
-        app:iconGravity="textStart"
-        app:iconTint="@color/white"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <ImageButton
+            android:id="@+id/btnChatMitra"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:layout_marginEnd="8dp"
+            android:background="@drawable/bg_outline_chat"
+            android:src="@android:drawable/stat_notify_chat"
+            app:tint="#2E7D32" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnAddToCart"
+            android:layout_width="0dp"
+            android:layout_height="56dp"
+            android:layout_weight="1"
+            android:backgroundTint="#2E7D32"
+            android:text="Tambah ke Keranjang"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:cornerRadius="12dp"
+            app:icon="@drawable/ic_cart"
+            app:iconGravity="textStart"
+            app:iconTint="@color/white" />
+
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

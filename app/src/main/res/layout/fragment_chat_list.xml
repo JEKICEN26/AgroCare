@@ -4,15 +4,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorSurface">
+    android:background="@color/white">
 
+    <!-- Header Toolbar -->
     <LinearLayout
-        android:id="@+id/header"
+        android:id="@+id/toolbarLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="16dp"
-        android:background="@color/colorPrimary"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/white"
+        android:elevation="4dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingHorizontal="16dp"
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
@@ -24,35 +27,27 @@
             android:clickable="true"
             android:focusable="true"
             android:src="@drawable/ic_arrow_back"
-            app:tint="@color/white" />
+            app:tint="#1A1A1A" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="Video Edukasi Bertani"
-            android:textColor="@color/white"
-            android:textSize="26sp"
+            android:layout_marginStart="16dp"
+            android:text="Pesan"
+            android:textColor="#1A1A1A"
+            android:textSize="18sp"
             android:textStyle="bold" />
-            
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:text="Pelajari teknik pertanian dari para ahli"
-            android:textColor="#E0E0E0"
-            android:textSize="14sp" />
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvVideoModules"
+        android:id="@+id/rvChatList"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:clipToPadding="false"
-        android:padding="16dp"
+        android:paddingVertical="8dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/header"
-        tools:listitem="@layout/item_video_module" />
+        app:layout_constraintTop_toBottomOf="@+id/toolbarLayout"
+        tools:listitem="@layout/item_chat_list" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

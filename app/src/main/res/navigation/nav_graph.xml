@@ -57,6 +57,9 @@
         <argument
             android:name="productImage"
             app:argType="string" />
+        <action
+            android:id="@+id/action_detail_to_chat"
+            app:destination="@id/navigation_chat" />
     </fragment>
 
     <fragment
@@ -80,5 +83,25 @@
         android:name="com.zaky.agrocare.ui.search.SearchFragment"
         android:label="Pencarian"
         tools:layout="@layout/fragment_search" />
+
+    <fragment
+        android:id="@+id/navigation_chat_list"
+        android:name="com.zaky.agrocare.ui.chat.ChatListFragment"
+        android:label="Daftar Chat"
+        tools:layout="@layout/fragment_chat_list">
+        <action
+            android:id="@+id/action_chat_list_to_chat"
+            app:destination="@id/navigation_chat" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_chat"
+        android:name="com.zaky.agrocare.ui.chat.ChatFragment"
+        android:label="Chat"
+        tools:layout="@layout/fragment_chat">
+        <argument
+            android:name="mitraName"
+            app:argType="string" />
+    </fragment>
 
 </navigation>
