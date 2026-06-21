@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="72dp"
+    android:height="72dp"
+    android:viewportWidth="100"
+    android:viewportHeight="100">
+
+    <!-- White Rounded Box (App Icon Base) -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M 20,0 L 80,0 C 91.046,0 100,8.954 100,20 L 100,80 C 100,91.046 91.046,100 80,100 L 20,100 C 8.954,100 0,91.046 0,80 L 0,20 C 0,8.954 8.954,0 20,0 Z" />
+
+    <!-- Left Leg of 'A' (Dark Green) -->
+    <path
+        android:fillColor="#1B5E20"
+        android:pathData="M 28 80 L 45 20 L 55 20 L 38 80 Z" />
+
+    <!-- Right Leg & Crossbar forming Leaf (Light Green) -->
+    <path
+        android:fillColor="#76FF03"
+        android:pathData="M 41 55 C 60 25 85 20 85 20 C 85 20 80 55 55 80 C 45 70 41 55 41 55 Z" />
+</vector>

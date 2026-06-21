@@ -2,6 +2,7 @@ package com.zaky.agrocare.ui.login
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.animation.DecelerateInterpolator
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.zaky.agrocare.MainActivity
@@ -26,6 +27,9 @@ class LoginActivity : AppCompatActivity() {
 
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        
+        // Menjalankan animasi intro
+        animateUI()
 
         binding.btnLogin.setOnClickListener {
             val username = binding.etUsername.text.toString().trim()
@@ -44,6 +48,26 @@ class LoginActivity : AppCompatActivity() {
                 Toast.makeText(this, "Username atau password salah", Toast.LENGTH_SHORT).show()
             }
         }
+    }
+    
+    private fun animateUI() {
+        // Animasi fade in & slide up untuk Logo
+        binding.llLogoContainer.animate()
+            .alpha(1f)
+            .translationY(0f)
+            .setDuration(800)
+            .setInterpolator(DecelerateInterpolator())
+            .setStartDelay(200)
+            .start()
+            
+        // Animasi fade in & slide up untuk Card Form Login
+        binding.cvLoginCard.animate()
+            .alpha(1f)
+            .translationY(0f)
+            .setDuration(800)
+            .setInterpolator(DecelerateInterpolator())
+            .setStartDelay(400)
+            .start()
     }
 
     private fun navigateToMain() {

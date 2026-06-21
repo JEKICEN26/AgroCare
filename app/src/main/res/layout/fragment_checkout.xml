@@ -142,13 +142,6 @@
                         android:layout_marginTop="12dp">
 
                         <RadioButton
-                            android:id="@+id/rbAgroPay"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="AgroPay (Saldo: Rp 1.500.000)"
-                            android:textColor="#1A1A1A" />
-
-                        <RadioButton
                             android:id="@+id/rbVA"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
