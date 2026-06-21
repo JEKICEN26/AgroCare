@@ -32,18 +32,18 @@ class MainActivity : AppCompatActivity() {
         
         binding.bottomNav.setupWithNavController(navController)
         
-        binding.bottomNav.setOnItemSelectedListener { item ->
-            if (item.itemId == R.id.navigation_notifications) {
-                startActivity(android.content.Intent(this, com.zaky.agrocare.ui.notifications.NotificationActivity::class.java))
-                return@setOnItemSelectedListener false
-            }
-            androidx.navigation.ui.NavigationUI.onNavDestinationSelected(item, navController)
-        }
+
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
-                R.id.navigation_checkout, R.id.navigation_product_detail -> {
+                R.id.navigation_checkout -> {
                     binding.bottomNav.visibility = View.GONE
                     binding.topBar.visibility = View.VISIBLE
+                    binding.etSearch.visibility = View.GONE
+                }
+                R.id.navigation_product_detail -> {
+                    binding.bottomNav.visibility = View.GONE
+                    binding.topBar.visibility = View.VISIBLE
+                    binding.etSearch.visibility = View.VISIBLE
                 }
                 R.id.navigation_search -> {
                     // Sembunyikan topbar dan bottomnav saat di search overlay
@@ -53,6 +53,7 @@ class MainActivity : AppCompatActivity() {
                 else -> {
                     binding.bottomNav.visibility = View.VISIBLE
                     binding.topBar.visibility = View.VISIBLE
+                    binding.etSearch.visibility = View.VISIBLE
                 }
             }
         }

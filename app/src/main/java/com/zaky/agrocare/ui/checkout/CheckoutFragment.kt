@@ -72,6 +72,14 @@ class CheckoutFragment : Fragment() {
             .setTitle("Pembayaran Berhasil!")
             .setMessage("Pesanan Anda sedang diproses.")
             .setPositiveButton("OK") { _, _ ->
+                // Tambahkan notifikasi
+                com.zaky.agrocare.ui.notifications.NotificationManager.addNotification(
+                    com.zaky.agrocare.ui.notifications.NotificationItem(
+                        title = "Pembayaran Berhasil!",
+                        description = "Pembayaran pesanan Anda telah berhasil dikonfirmasi. Pesanan sedang disiapkan.",
+                        timestamp = "Baru saja"
+                    )
+                )
                 // Bersihkan keranjang setelah checkout berhasil
                 viewModel.clearCart()
                 // Kembali ke Home

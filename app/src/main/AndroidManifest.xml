@@ -24,9 +24,6 @@
         <activity
             android:name=".MainActivity"
             android:exported="true" />
-        <activity
-            android:name=".ui.notifications.NotificationActivity"
-            android:exported="false" />
     </application>
 
 </manifest>

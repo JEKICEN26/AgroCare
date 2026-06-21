@@ -19,8 +19,9 @@
 
     <fragment
         android:id="@+id/navigation_notifications"
-        android:name="com.zaky.agrocare.ui.home.HomeFragment"
-        android:label="Notifikasi" />
+        android:name="com.zaky.agrocare.ui.notifications.NotificationFragment"
+        android:label="Notifikasi"
+        tools:layout="@layout/fragment_notification" />
 
     <fragment
         android:id="@+id/navigation_profile"
