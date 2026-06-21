@@ -31,7 +31,14 @@ class MainActivity : AppCompatActivity() {
         val navController = navHostFragment.navController
         
         binding.bottomNav.setupWithNavController(navController)
-
+        
+        binding.bottomNav.setOnItemSelectedListener { item ->
+            if (item.itemId == R.id.navigation_notifications) {
+                startActivity(android.content.Intent(this, com.zaky.agrocare.ui.notifications.NotificationActivity::class.java))
+                return@setOnItemSelectedListener false
+            }
+            androidx.navigation.ui.NavigationUI.onNavDestinationSelected(item, navController)
+        }
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
                 R.id.navigation_checkout, R.id.navigation_product_detail -> {
