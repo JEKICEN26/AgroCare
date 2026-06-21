@@ -30,10 +30,10 @@ class VideoEducationFragment : Fragment() {
         
         val mockVideos = listOf(
             VideoModule(
-                id = "Pq407y-HMBg", // A random valid-looking ID for farming 
-                title = "Cara Sukses Menanam Padi dengan Sistem Jajar Legowo",
-                channel = "Kementerian Pertanian RI",
-                description = "Pelajari metode menanam padi yang terbukti dapat meningkatkan hasil panen secara signifikan."
+                id = "jB6ozK-uFEI", // Video dari permintaan Anda
+                title = "Panduan Pintar Bertani", // Anda bisa mengubah judul ini nanti
+                channel = "Edukasi Tani",
+                description = "Pelajari berbagai metode dan panduan dasar pertanian dari video ini."
             ),
             VideoModule(
                 id = "xZcT0-3Yg5c",

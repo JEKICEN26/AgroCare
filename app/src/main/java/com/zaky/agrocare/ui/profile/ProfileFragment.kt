@@ -113,7 +113,13 @@ class ProfileFragment : Fragment() {
 
         // Logout interaction
         binding.btnLogout.setOnClickListener {
+            val sessionManager = com.zaky.agrocare.utils.SessionManager(requireContext())
+            sessionManager.logout()
             Toast.makeText(requireContext(), "Berhasil Keluar", Toast.LENGTH_SHORT).show()
+            
+            val intent = android.content.Intent(requireContext(), com.zaky.agrocare.ui.login.LoginActivity::class.java)
+            intent.flags = android.content.Intent.FLAG_ACTIVITY_NEW_TASK or android.content.Intent.FLAG_ACTIVITY_CLEAR_TASK
+            startActivity(intent)
         }
         
         binding.btnSettings.setOnClickListener {
