@@ -15,11 +15,11 @@ import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import com.zaky.agrocare.R
-import com.zaky.agrocare.databinding.FragmentEducationModuleBinding
+import com.zaky.agrocare.databinding.FragmentGrafikprediksiBinding
 
 class EducationModuleFragment : Fragment() {
 
-    private var _binding: FragmentEducationModuleBinding? = null
+    private var _binding: FragmentGrafikprediksiBinding? = null
     private val binding get() = _binding!!
 
     // Mock Data based on typical BPS fluctuation for 6 months (Jan-Jun)
@@ -37,7 +37,7 @@ class EducationModuleFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentEducationModuleBinding.inflate(inflater, container, false)
+        _binding = FragmentGrafikprediksiBinding.inflate(inflater, container, false)
         return binding.root
     }
 

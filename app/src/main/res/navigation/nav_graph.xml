@@ -15,7 +15,7 @@
         android:id="@+id/navigation_insight"
         android:name="com.zaky.agrocare.ui.education.EducationModuleFragment"
         android:label="Insight"
-        tools:layout="@layout/fragment_education_module" />
+        tools:layout="@layout/fragment_grafikprediksi" />
 
     <fragment
         android:id="@+id/navigation_notifications"
@@ -33,7 +33,7 @@
         android:id="@+id/navigation_education_module"
         android:name="com.zaky.agrocare.ui.education.EducationModuleFragment"
         android:label="Insight"
-        tools:layout="@layout/fragment_education_module" />
+        tools:layout="@layout/fragment_grafikprediksi" />
 
     <fragment
         android:id="@+id/navigation_video_education"
