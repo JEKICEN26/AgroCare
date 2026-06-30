@@ -110,6 +110,11 @@ class ProfileFragment : Fragment() {
         binding.menuWishlist.setOnClickListener {
             findNavController().navigate(R.id.navigation_favorite)
         }
+        
+        // Navigation to Help Center
+        binding.menuHelpCenter.setOnClickListener {
+            findNavController().navigate(R.id.navigation_help_center)
+        }
 
         // Navigation to Education Module
         binding.menuEducation.setOnClickListener {

@@ -47,10 +47,6 @@ class ProductCategoryFragment : Fragment() {
         binding.btnBack.setOnClickListener {
             findNavController().navigateUp()
         }
-        
-        binding.btnFilter.setOnClickListener {
-            // Handle filter logic
-        }
     }
 
     private fun setupRecyclerView() {

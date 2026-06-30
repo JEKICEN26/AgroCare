@@ -280,7 +280,17 @@
                 <ImageView android:layout_width="16dp" android:layout_height="16dp" android:src="@android:drawable/ic_media_play" app:tint="#BDBDBD" />
             </LinearLayout>
 
-            <LinearLayout android:layout_width="match_parent" android:layout_height="56dp" android:background="@color/white" android:gravity="center_vertical" android:paddingHorizontal="24dp" android:layout_marginTop="1dp">
+            <LinearLayout
+                android:id="@+id/menuHelpCenter"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:background="@color/white"
+                android:gravity="center_vertical"
+                android:paddingHorizontal="24dp"
+                android:layout_marginTop="1dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground">
                 <ImageView android:layout_width="20dp" android:layout_height="20dp" android:src="@android:drawable/ic_menu_help" app:tint="@color/colorTextSecondary" />
                 <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_marginStart="16dp" android:layout_weight="1" android:text="Pusat Bantuan" android:textColor="@color/colorTextPrimary" />
                 <ImageView android:layout_width="16dp" android:layout_height="16dp" android:src="@android:drawable/ic_media_play" app:tint="#BDBDBD" />

@@ -36,6 +36,38 @@
         tools:layout="@layout/fragment_favorite" />
 
     <fragment
+        android:id="@+id/navigation_help_center"
+        android:name="com.zaky.agrocare.ui.help.HelpCenterFragment"
+        android:label="Pusat Bantuan"
+        tools:layout="@layout/fragment_help_center">
+        <action
+            android:id="@+id/action_help_center_to_detail"
+            app:destination="@id/navigation_help_detail" />
+        <action
+            android:id="@+id/action_help_center_to_chat"
+            app:destination="@id/navigation_support_chat" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_support_chat"
+        android:name="com.zaky.agrocare.ui.help.SupportChatFragment"
+        android:label="Support Chat"
+        tools:layout="@layout/fragment_support_chat" />
+
+    <fragment
+        android:id="@+id/navigation_help_detail"
+        android:name="com.zaky.agrocare.ui.help.HelpDetailFragment"
+        android:label="Detail Bantuan"
+        tools:layout="@layout/fragment_help_detail">
+        <argument
+            android:name="title"
+            app:argType="string" />
+        <argument
+            android:name="content"
+            app:argType="string" />
+    </fragment>
+
+    <fragment
         android:id="@+id/navigation_education_module"
         android:name="com.zaky.agrocare.ui.education.EducationModuleFragment"
         android:label="Insight"
