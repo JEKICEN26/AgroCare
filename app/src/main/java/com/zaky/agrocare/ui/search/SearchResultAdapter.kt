@@ -11,6 +11,7 @@ import com.zaky.agrocare.R
 import com.zaky.agrocare.data.Product
 import com.zaky.agrocare.data.SearchItem
 import com.zaky.agrocare.ui.education.EducationModule
+import com.zaky.agrocare.utils.loadProductImage
 
 class SearchResultAdapter(
     private val onProductClick: (Product) -> Unit,
@@ -82,10 +83,8 @@ class SearchResultAdapter(
             tvType.text = "Produk"
             tvType.setTextColor(itemView.context.getColor(R.color.colorPrimary))
             
-            ivImage.load(product.imageUrl) {
-                crossfade(true)
-                placeholder(android.R.drawable.ic_menu_gallery)
-            }
+            // Menggunakan extension loadProductImage agar mensinkronkan gambar lokal/DB
+            ivImage.loadProductImage(product.imageUrl)
 
             itemView.setOnClickListener { onClick(product) }
         }

@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.zaky.agrocare.data.CartItem
 import com.zaky.agrocare.databinding.ItemCartBinding
+import com.zaky.agrocare.utils.loadProductImage
 import com.zaky.agrocare.utils.toRupiah
 
 class CartAdapter(
@@ -30,10 +31,8 @@ class CartAdapter(
             tvCartItemPrice.text = (item.price * item.quantity).toRupiah()
             tvQuantity.text = item.quantity.toString()
             
-            ivCartItem.load(item.imageUrl) {
-                crossfade(true)
-                placeholder(android.R.drawable.ic_menu_gallery)
-            }
+            // Menggunakan extension loadProductImage agar mensinkronkan gambar lokal/DB
+            ivCartItem.loadProductImage(item.imageUrl)
 
             btnPlus.setOnClickListener { onIncrease(item.id) }
             btnMinus.setOnClickListener { onDecrease(item.id) }

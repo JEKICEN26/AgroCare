@@ -27,28 +27,35 @@ class ProductAdapter(
         holder.binding.apply {
             tvProductName.text = product.name
             tvProductPrice.text = product.price
-            ivProduct.load(product.imageUrl) {
+            
+            // Logika untuk memuat gambar dari URL atau Drawable lokal
+            val context = root.context
+            val imageSource: Any = if (product.imageUrl.startsWith("http")) {
+                product.imageUrl
+            } else {
+                // Mencari ID drawable berdasarkan nama string
+                val resId = context.resources.getIdentifier(product.imageUrl, "drawable", context.packageName)
+                if (resId != 0) resId else android.R.drawable.ic_menu_gallery
+            }
+
+            ivProduct.load(imageSource) {
                 crossfade(true)
                 placeholder(android.R.drawable.ic_menu_gallery)
+                error(android.R.drawable.ic_menu_report_image)
             }
             
             // Handle Favorite state
             val isFav = isFavorite(product)
             if (isFav) {
                 btnFavorite.setImageResource(com.zaky.agrocare.R.drawable.ic_heart_filled)
-                btnFavorite.setColorFilter(android.graphics.Color.parseColor("#F44336")) // Red tint for favorite
+                btnFavorite.setColorFilter(android.graphics.Color.parseColor("#F44336"))
             } else {
                 btnFavorite.setImageResource(com.zaky.agrocare.R.drawable.ic_heart_outline)
-                btnFavorite.setColorFilter(android.graphics.Color.parseColor("#757575")) // Gray tint for non-favorite
+                btnFavorite.setColorFilter(android.graphics.Color.parseColor("#757575"))
             }
             
             btnFavorite.setOnClickListener {
                 onFavoriteClick(product)
-                if (!isFav) {
-                    android.widget.Toast.makeText(it.context, "Berhasil ditambahkan ke Favorit Saya", android.widget.Toast.LENGTH_SHORT).show()
-                } else {
-                    android.widget.Toast.makeText(it.context, "Berhasil dihapus dari Favorit Saya", android.widget.Toast.LENGTH_SHORT).show()
-                }
             }
             
             root.setOnClickListener {

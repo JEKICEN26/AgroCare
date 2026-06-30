@@ -7,13 +7,18 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.zaky.agrocare.R
 import com.zaky.agrocare.data.CartItem
 import com.zaky.agrocare.data.Product
+import com.zaky.agrocare.data.local.AppDatabase
 import com.zaky.agrocare.databinding.FragmentProductCategoryBinding
 import com.zaky.agrocare.ui.cart.CartViewModel
+import com.zaky.agrocare.ui.home.HomeViewModel
+import com.zaky.agrocare.ui.home.HomeViewModelFactory
 import com.zaky.agrocare.ui.home.ProductAdapter
 
 class ProductCategoryFragment : Fragment() {
@@ -50,24 +55,41 @@ class ProductCategoryFragment : Fragment() {
     }
 
     private fun setupRecyclerView() {
-        val dummyProducts = if (args.title.contains("Benih", ignoreCase = true)) {
-            listOf(
-                Product(1, "Benih Tomat Unggul", "Rp 15.000", "https://example.com/tomat.jpg"),
-                Product(2, "Bibit Cabai Rawit", "Rp 12.500", "https://example.com/cabai.jpg"),
-                Product(3, "Benih Jagung Manis", "Rp 20.000", "https://example.com/jagung.jpg"),
-                Product(4, "Bibit Selada Hidroponik", "Rp 10.000", "https://example.com/selada.jpg")
-            )
-        } else {
-            listOf(
-                Product(5, "Pupuk Organik Cair", "Rp 45.000", "https://example.com/pupuk1.jpg"),
-                Product(6, "Pupuk NPK Mutiara", "Rp 35.000", "https://example.com/pupuk2.jpg"),
-                Product(7, "Kompos Kambing Matang", "Rp 15.000", "https://example.com/pupuk3.jpg"),
-                Product(8, "Bio-Aktivator EM4", "Rp 25.000", "https://example.com/pupuk4.jpg")
-            )
-        }
+        // Inisialisasi HomeViewModel untuk mendapatkan data lengkap
+        val database = AppDatabase.getDatabase(requireContext(), viewLifecycleOwner.lifecycleScope)
+        val factory = HomeViewModelFactory(database.productDao())
+        val homeViewModel = ViewModelProvider(this, factory).get(HomeViewModel::class.java)
 
+        // Tentukan list produk berdasarkan kategori
+        if (args.title == "Semua Produk") {
+            // Mengambil semua produk dari ViewModel (Hardcode + Database)
+            homeViewModel.allProducts.observe(viewLifecycleOwner) { products ->
+                updateAdapter(products)
+            }
+        } else {
+            // Filter manual untuk kategori Bibit atau Pupuk (Hardcode)
+            val filteredProducts = if (args.title.contains("Benih", ignoreCase = true) || args.title.contains("Bibit", ignoreCase = true)) {
+                listOf(
+                    Product(2, "Bibit Cabai Rawit Unggul", "Rp 15.000", "https://picsum.photos/seed/chili/400/300"),
+                    Product(4, "Bibit Padi Inpari 32", "Rp 85.000", "https://picsum.photos/seed/rice/400/300"),
+                    Product(6, "Benih Jagung Hibrida", "Rp 60.000", "https://picsum.photos/seed/corn/400/300")
+                )
+            } else if (args.title.contains("Pupuk", ignoreCase = true)) {
+                listOf(
+                    Product(3, "Pupuk Kompos Premium 5kg", "Rp 45.000", "https://picsum.photos/seed/fertilizer/400/300"),
+                    Product(5, "Pupuk Kandang Premium", "Rp 12.000", "https://picsum.photos/seed/sprayer/400/300"),
+                    Product(7, "Pupuk Organik Cair (POC)", "Rp 40.000", "https://picsum.photos/seed/corn/400/300")
+                )
+            } else {
+                emptyList()
+            }
+            updateAdapter(filteredProducts)
+        }
+    }
+
+    private fun updateAdapter(products: List<Product>) {
         val adapter = ProductAdapter(
-            dummyProducts,
+            products,
             onItemClick = { product ->
                 val bundle = Bundle().apply {
                     putInt("productId", product.id)

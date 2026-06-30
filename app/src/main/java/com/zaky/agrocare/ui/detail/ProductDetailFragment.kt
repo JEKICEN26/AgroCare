@@ -8,12 +8,12 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import coil.load
 import com.google.android.material.snackbar.Snackbar
-import com.zaky.agrocare.R
 import com.zaky.agrocare.data.CartItem
+import com.zaky.agrocare.data.Product
 import com.zaky.agrocare.databinding.FragmentProductDetailBinding
 import com.zaky.agrocare.ui.cart.CartViewModel
+import com.zaky.agrocare.utils.loadProductImage
 
 class ProductDetailFragment : Fragment() {
 
@@ -23,7 +23,6 @@ class ProductDetailFragment : Fragment() {
     private val cartViewModel: CartViewModel by activityViewModels()
     private val favoriteViewModel: com.zaky.agrocare.ui.favorite.FavoriteViewModel by activityViewModels()
     
-    // Mengambil data produk dari navigasi
     private val args: ProductDetailFragmentArgs by navArgs()
 
     override fun onCreateView(
@@ -46,10 +45,9 @@ class ProductDetailFragment : Fragment() {
         binding.apply {
             tvProductName.text = args.productName
             tvProductPrice.text = args.productPrice
-            ivProductDetail.load(args.productImage) {
-                crossfade(true)
-                placeholder(android.R.drawable.ic_menu_gallery)
-            }
+            
+            // Menggunakan extension loadProductImage agar sinkron dengan database
+            ivProductDetail.loadProductImage(args.productImage)
         }
     }
 
@@ -58,7 +56,7 @@ class ProductDetailFragment : Fragment() {
             findNavController().navigateUp()
         }
 
-        val currentProduct = com.zaky.agrocare.data.Product(
+        val currentProduct = Product(
             id = args.productId,
             name = args.productName,
             price = args.productPrice,
@@ -93,7 +91,6 @@ class ProductDetailFragment : Fragment() {
         }
 
         binding.btnAddToCart.setOnClickListener {
-            // Konversi harga String (Rp 12.500) ke Int (12500)
             val cleanPrice = args.productPrice
                 .replace("Rp", "")
                 .replace(".", "")

@@ -8,10 +8,12 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.zaky.agrocare.R
 import com.zaky.agrocare.data.CartItem
+import com.zaky.agrocare.data.local.AppDatabase
 import com.zaky.agrocare.databinding.FragmentHomeBinding
 import com.zaky.agrocare.ui.cart.CartViewModel
 
@@ -20,9 +22,7 @@ class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
     
-    // Gunakan activityViewModels agar ViewModel berbagi data dengan BottomSheet
     private val cartViewModel: CartViewModel by activityViewModels()
-    
     private val favoriteViewModel: com.zaky.agrocare.ui.favorite.FavoriteViewModel by activityViewModels()
 
     override fun onCreateView(
@@ -30,13 +30,17 @@ class HomeFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val homeViewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
+        val database = AppDatabase.getDatabase(requireContext(), viewLifecycleOwner.lifecycleScope)
+        val factory = HomeViewModelFactory(database.productDao())
+        val homeViewModel = ViewModelProvider(this, factory).get(HomeViewModel::class.java)
+
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         
         setupRecyclerView()
         setupMenuListeners()
 
-        homeViewModel.products.observe(viewLifecycleOwner) { products ->
+        // PERBAIKAN: Menggunakan homeProducts yang dibatasi 4 produk
+        homeViewModel.homeProducts.observe(viewLifecycleOwner) { products ->
             val adapter = ProductAdapter(
                 products,
                 onItemClick = { product ->
@@ -49,7 +53,6 @@ class HomeFragment : Fragment() {
                     findNavController().navigate(R.id.navigation_product_detail, bundle)
                 },
                 onAddToCartClick = { product ->
-                    // Konversi harga string ke Int (misal "Rp 15.000" -> 15000)
                     val priceInt = product.price.replace(Regex("[^0-9]"), "").toIntOrNull() ?: 0
                     cartViewModel.addToCart(
                         CartItem(
