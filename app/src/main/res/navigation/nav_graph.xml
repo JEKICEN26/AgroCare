@@ -30,6 +30,12 @@
         tools:layout="@layout/fragment_profile" />
 
     <fragment
+        android:id="@+id/navigation_favorite"
+        android:name="com.zaky.agrocare.ui.favorite.FavoriteFragment"
+        android:label="Favorit Saya"
+        tools:layout="@layout/fragment_favorite" />
+
+    <fragment
         android:id="@+id/navigation_education_module"
         android:name="com.zaky.agrocare.ui.education.EducationModuleFragment"
         android:label="Insight"

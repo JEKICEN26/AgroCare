@@ -23,6 +23,7 @@ class ProductCategoryFragment : Fragment() {
     
     private val args: ProductCategoryFragmentArgs by navArgs()
     private val cartViewModel: CartViewModel by activityViewModels()
+    private val favoriteViewModel: com.zaky.agrocare.ui.favorite.FavoriteViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -92,9 +93,19 @@ class ProductCategoryFragment : Fragment() {
                     )
                 )
                 Toast.makeText(requireContext(), "Dimasukkan ke keranjang", Toast.LENGTH_SHORT).show()
+            },
+            isFavorite = { product ->
+                favoriteViewModel.isFavorite(product.id)
+            },
+            onFavoriteClick = { product ->
+                favoriteViewModel.toggleFavorite(product)
             }
         )
         binding.rvProducts.adapter = adapter
+        
+        favoriteViewModel.favoriteProducts.observe(viewLifecycleOwner) {
+            adapter.notifyDataSetChanged()
+        }
     }
 
     override fun onDestroyView() {

@@ -21,6 +21,7 @@ class ProductDetailFragment : Fragment() {
     private val binding get() = _binding!!
     
     private val cartViewModel: CartViewModel by activityViewModels()
+    private val favoriteViewModel: com.zaky.agrocare.ui.favorite.FavoriteViewModel by activityViewModels()
     
     // Mengambil data produk dari navigasi
     private val args: ProductDetailFragmentArgs by navArgs()
@@ -55,6 +56,34 @@ class ProductDetailFragment : Fragment() {
     private fun setupActions() {
         binding.btnBack.setOnClickListener {
             findNavController().navigateUp()
+        }
+
+        val currentProduct = com.zaky.agrocare.data.Product(
+            id = args.productId,
+            name = args.productName,
+            price = args.productPrice,
+            imageUrl = args.productImage
+        )
+
+        favoriteViewModel.favoriteProducts.observe(viewLifecycleOwner) {
+            val isFav = favoriteViewModel.isFavorite(args.productId)
+            if (isFav) {
+                binding.btnFavoriteDetail.setImageResource(com.zaky.agrocare.R.drawable.ic_heart_filled)
+                binding.btnFavoriteDetail.setColorFilter(android.graphics.Color.parseColor("#F44336"))
+            } else {
+                binding.btnFavoriteDetail.setImageResource(com.zaky.agrocare.R.drawable.ic_heart_outline)
+                binding.btnFavoriteDetail.setColorFilter(android.graphics.Color.parseColor("#757575"))
+            }
+        }
+
+        binding.btnFavoriteDetail.setOnClickListener {
+            val isFav = favoriteViewModel.isFavorite(args.productId)
+            favoriteViewModel.toggleFavorite(currentProduct)
+            if (!isFav) {
+                android.widget.Toast.makeText(requireContext(), "Berhasil ditambahkan ke Favorit Saya", android.widget.Toast.LENGTH_SHORT).show()
+            } else {
+                android.widget.Toast.makeText(requireContext(), "Berhasil dihapus dari Favorit Saya", android.widget.Toast.LENGTH_SHORT).show()
+            }
         }
 
         binding.btnChatMitra.setOnClickListener {

@@ -20,17 +20,35 @@
             android:orientation="vertical"
             android:padding="16dp">
 
-            <!-- Tombol Kembali -->
-            <ImageView
-                android:id="@+id/btnBack"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:padding="8dp"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:clickable="true"
-                android:focusable="true"
-                android:src="@drawable/ic_arrow_back"
-                app:tint="@color/colorTextPrimary" />
+            <!-- Tombol Kembali & Favorit -->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/btnBack"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:padding="8dp"
+                    android:layout_alignParentStart="true"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:src="@drawable/ic_arrow_back"
+                    app:tint="@color/colorTextPrimary" />
+
+                <ImageView
+                    android:id="@+id/btnFavoriteDetail"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:padding="8dp"
+                    android:layout_alignParentEnd="true"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:src="@drawable/ic_heart_outline"
+                    app:tint="@color/colorTextSecondary" />
+            </RelativeLayout>
 
             <!-- Gambar Produk -->
             <com.google.android.material.imageview.ShapeableImageView

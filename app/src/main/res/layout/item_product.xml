@@ -13,13 +13,33 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <ImageView
-            android:id="@+id/ivProduct"
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="140dp"
-            android:scaleType="centerCrop"
-            android:src="@android:drawable/ic_menu_gallery"
-            android:background="#F0F0F0" />
+            android:layout_height="140dp">
+
+            <ImageView
+                android:id="@+id/ivProduct"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:src="@android:drawable/ic_menu_gallery"
+                android:background="#F0F0F0" />
+
+            <ImageView
+                android:id="@+id/btnFavorite"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_gravity="top|end"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/bg_circle_white"
+                android:padding="6dp"
+                android:src="@drawable/ic_heart_outline"
+                app:tint="@color/colorTextSecondary"
+                android:elevation="2dp"
+                android:clickable="true"
+                android:focusable="true"/>
+        </FrameLayout>
 
         <LinearLayout
             android:layout_width="match_parent"

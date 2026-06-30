@@ -22,6 +22,8 @@ class HomeFragment : Fragment() {
     
     // Gunakan activityViewModels agar ViewModel berbagi data dengan BottomSheet
     private val cartViewModel: CartViewModel by activityViewModels()
+    
+    private val favoriteViewModel: com.zaky.agrocare.ui.favorite.FavoriteViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -35,7 +37,7 @@ class HomeFragment : Fragment() {
         setupMenuListeners()
 
         homeViewModel.products.observe(viewLifecycleOwner) { products ->
-            binding.rvProducts.adapter = ProductAdapter(
+            val adapter = ProductAdapter(
                 products,
                 onItemClick = { product ->
                     val bundle = Bundle().apply {
@@ -59,8 +61,19 @@ class HomeFragment : Fragment() {
                         )
                     )
                     Toast.makeText(requireContext(), "Dimasukkan ke keranjang", Toast.LENGTH_SHORT).show()
+                },
+                isFavorite = { product ->
+                    favoriteViewModel.isFavorite(product.id)
+                },
+                onFavoriteClick = { product ->
+                    favoriteViewModel.toggleFavorite(product)
                 }
             )
+            binding.rvProducts.adapter = adapter
+            
+            favoriteViewModel.favoriteProducts.observe(viewLifecycleOwner) {
+                adapter.notifyDataSetChanged()
+            }
         }
         
         return binding.root
