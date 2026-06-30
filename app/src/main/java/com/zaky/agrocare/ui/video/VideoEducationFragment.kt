@@ -32,25 +32,25 @@ class VideoEducationFragment : Fragment() {
             VideoModule(
                 id = "jB6ozK-uFEI", // Video dari permintaan Anda
                 title = "Panduan Pintar Bertani", // Anda bisa mengubah judul ini nanti
-                channel = "Edukasi Tani",
+                channel = "DW Indonesia",
                 description = "Pelajari berbagai metode dan panduan dasar pertanian dari video ini."
             ),
             VideoModule(
-                id = "xZcT0-3Yg5c",
+                id = "4IT4nsn2Kbk",
                 title = "Panduan Lengkap Hidroponik untuk Pemula",
-                channel = "Petani Millenial",
+                channel = "TDA TV",
                 description = "Langkah demi langkah memulai kebun hidroponik di pekarangan rumah dengan mudah dan murah."
             ),
             VideoModule(
-                id = "y_Pz3p5Qv0o",
+                id = "jF_ja8ZT3MY",
                 title = "Pembuatan Pupuk Kompos Organik dari Limbah Dapur",
-                channel = "Penyuluh Pertanian",
+                channel = "Yudhi green",
                 description = "Cara mudah mengolah limbah rumah tangga menjadi pupuk berkualitas tinggi untuk tanaman anda."
             ),
             VideoModule(
-                id = "R7kEa_k-21w",
+                id = "NRWBcHl3EGc",
                 title = "Teknik Rahasia Menanam Cabai Rawit Lebat",
-                channel = "AgroCare Official",
+                channel = "PORTAL INFORMASI NASIONAL",
                 description = "Simak rahasia petani sukses membuat tanaman cabai berbuah sangat lebat dan anti hama."
             )
         )
