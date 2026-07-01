@@ -31,6 +31,19 @@ class CartAdapter(
             tvCartItemPrice.text = (item.price * item.quantity).toRupiah()
             tvQuantity.text = item.quantity.toString()
             
+            // Tampilkan info stok
+            if (item.stock < Int.MAX_VALUE) {
+                tvStockInfo.visibility = android.view.View.VISIBLE
+                tvStockInfo.text = "Stok: ${item.stock}"
+            } else {
+                tvStockInfo.visibility = android.view.View.GONE
+            }
+            
+            // Disable tombol + jika quantity sudah mencapai stok
+            val isAtMaxStock = item.quantity >= item.stock
+            btnPlus.isEnabled = !isAtMaxStock
+            btnPlus.alpha = if (isAtMaxStock) 0.4f else 1.0f
+            
             // Menggunakan extension loadProductImage agar mensinkronkan gambar lokal/DB
             ivCartItem.loadProductImage(item.imageUrl)
 
@@ -50,3 +63,4 @@ class CartAdapter(
         }
     }
 }
+

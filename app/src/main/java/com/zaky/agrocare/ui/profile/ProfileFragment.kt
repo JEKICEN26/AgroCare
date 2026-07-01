@@ -156,6 +156,11 @@ class ProfileFragment : Fragment() {
         binding.menuEducation.setOnClickListener {
             findNavController().navigate(R.id.navigation_video_education)
         }
+        
+        // Navigation to Delivery Address
+        binding.menuDeliveryAddress.setOnClickListener {
+            findNavController().navigate(R.id.navigation_delivery_address)
+        }
 
         // Logout interaction
         binding.btnLogout.setOnClickListener {

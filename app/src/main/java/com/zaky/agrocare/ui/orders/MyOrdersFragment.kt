@@ -135,12 +135,14 @@ class MyOrdersFragment : Fragment() {
     }
     
     private fun buyAgain(order: Order) {
+        val stock = com.zaky.agrocare.data.StockManager.getStock(order.productId)
         val cartItem = CartItem(
             id = order.productId,
             name = order.productName,
             price = order.price,
             quantity = 1,
-            imageUrl = order.imageUrl
+            imageUrl = order.imageUrl,
+            stock = stock
         )
         cartViewModel.addToCart(cartItem)
         Toast.makeText(requireContext(), "${order.productName} ditambahkan ke keranjang!", Toast.LENGTH_SHORT).show()

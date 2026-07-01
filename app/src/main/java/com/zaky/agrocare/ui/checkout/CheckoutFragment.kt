@@ -5,12 +5,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.zaky.agrocare.R
+import com.zaky.agrocare.data.AddressManager
 import com.zaky.agrocare.data.OrderManager
+import com.zaky.agrocare.data.local.AddressEntity
 import com.zaky.agrocare.databinding.FragmentCheckoutBinding
 import com.zaky.agrocare.ui.cart.CartViewModel
 import com.zaky.agrocare.utils.toRupiah
@@ -19,6 +23,8 @@ class CheckoutFragment : Fragment() {
 
     private var _binding: FragmentCheckoutBinding? = null
     private val binding get() = _binding!!
+    
+    private var currentAddress: AddressEntity? = null
     
     // Inisialisasi SharedViewModel menggunakan activityViewModels()
     private val viewModel: CartViewModel by activityViewModels()
@@ -40,6 +46,27 @@ class CheckoutFragment : Fragment() {
         setupListeners()
     }
 
+    override fun onResume() {
+        super.onResume()
+        loadDefaultAddress()
+    }
+
+    private fun loadDefaultAddress() {
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+            val address = AddressManager.getDefaultAddress()
+            currentAddress = address
+            if (address != null) {
+                binding.tvCheckoutAddressTitle.text = address.title
+                binding.tvCheckoutAddressDetail.text = address.fullAddress
+                binding.btnChangeAddress.text = "Ubah Alamat"
+            } else {
+                binding.tvCheckoutAddressTitle.text = "Belum ada alamat"
+                binding.tvCheckoutAddressDetail.text = "Silakan tambah atau pilih alamat pengiriman"
+                binding.btnChangeAddress.text = "Pilih Alamat"
+            }
+        }
+    }
+
     private fun setupCourierDropdown() {
         val couriers = listOf("AgroExpress (Instant 2 Jam)")
         val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, couriers)
@@ -58,12 +85,16 @@ class CheckoutFragment : Fragment() {
             findNavController().navigateUp()
         }
 
+        binding.btnChangeAddress.setOnClickListener {
+            findNavController().navigate(R.id.navigation_delivery_address)
+        }
+
         binding.btnFinishCheckout.setOnClickListener {
-            val address = binding.etAddress.text.toString()
+            val address = currentAddress?.fullAddress
             
             // Validasi Alamat
-            if (address.isEmpty()) {
-                binding.etAddress.error = "Alamat tidak boleh kosong"
+            if (address.isNullOrEmpty()) {
+                Toast.makeText(requireContext(), "Silakan pilih alamat pengiriman terlebih dahulu", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 

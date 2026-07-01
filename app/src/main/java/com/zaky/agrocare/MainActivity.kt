@@ -12,6 +12,7 @@ import com.zaky.agrocare.databinding.ActivityMainBinding
 import com.zaky.agrocare.ui.cart.CartBottomSheetFragment
 import com.zaky.agrocare.ui.cart.CartViewModel
 import com.zaky.agrocare.data.OrderManager
+import com.zaky.agrocare.data.StockManager
 
 class MainActivity : AppCompatActivity() {
 
@@ -24,6 +25,8 @@ class MainActivity : AppCompatActivity() {
         
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         OrderManager.init(applicationContext)
+        StockManager.init(applicationContext)
+        com.zaky.agrocare.data.AddressManager.init(applicationContext)
         
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)

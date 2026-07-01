@@ -51,6 +51,19 @@
         app:layout_constraintStart_toStartOf="@id/tvCartItemTitle"
         app:layout_constraintTop_toBottomOf="@id/tvCartItemTitle" />
 
+    <TextView
+        android:id="@+id/tvStockInfo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:text="Stok: 50"
+        android:textColor="#999999"
+        android:textSize="11sp"
+        android:visibility="gone"
+        tools:visibility="visible"
+        app:layout_constraintStart_toStartOf="@id/tvCartItemTitle"
+        app:layout_constraintTop_toBottomOf="@id/tvCartItemPrice" />
+
     <ImageView
         android:id="@+id/btnRemoveItem"
         android:layout_width="24dp"

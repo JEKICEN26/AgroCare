@@ -5,5 +5,6 @@ data class CartItem(
     val name: String,
     val price: Int,
     val quantity: Int, // Diubah menjadi val agar DiffUtil bekerja maksimal
-    val imageUrl: String
+    val imageUrl: String,
+    val stock: Int = Int.MAX_VALUE // Stok maksimum produk, default tak terbatas
 )

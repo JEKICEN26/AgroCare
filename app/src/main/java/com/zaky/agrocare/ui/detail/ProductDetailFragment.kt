@@ -48,6 +48,10 @@ class ProductDetailFragment : Fragment() {
             
             // Menggunakan extension loadProductImage agar sinkron dengan database
             ivProductDetail.loadProductImage(args.productImage)
+            
+            // Tampilkan stok aktual dari StockManager
+            val stock = com.zaky.agrocare.data.StockManager.getStock(args.productId)
+            tvStockValue.text = "$stock kg"
         }
     }
 
@@ -98,12 +102,15 @@ class ProductDetailFragment : Fragment() {
                 .trim()
                 .toIntOrNull() ?: 0
 
+            val stock = com.zaky.agrocare.data.StockManager.getStock(args.productId)
+
             val item = CartItem(
                 id = args.productId,
                 name = args.productName,
                 price = cleanPrice,
                 quantity = 1,
-                imageUrl = args.productImage
+                imageUrl = args.productImage,
+                stock = stock
             )
             
             cartViewModel.addToCart(item)

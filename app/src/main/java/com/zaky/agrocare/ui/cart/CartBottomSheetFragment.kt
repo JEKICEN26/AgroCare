@@ -81,6 +81,14 @@ class CartBottomSheetFragment : BottomSheetDialogFragment() {
         viewModel.totalPrice.observe(viewLifecycleOwner) { price ->
             binding.tvTotalAmount.text = price.toRupiah()
         }
+
+        // Observe pesan peringatan stok
+        viewModel.stockWarningEvent.observe(viewLifecycleOwner) { message ->
+            if (!message.isNullOrEmpty()) {
+                android.widget.Toast.makeText(requireContext(), message, android.widget.Toast.LENGTH_SHORT).show()
+                viewModel.clearStockWarning()
+            }
+        }
     }
 
     override fun onDestroyView() {

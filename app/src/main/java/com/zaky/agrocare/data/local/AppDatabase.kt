@@ -9,12 +9,13 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-@Database(entities = [ProductEntity::class, CartEntity::class, OrderEntity::class], version = 4, exportSchema = false)
+@Database(entities = [ProductEntity::class, CartEntity::class, OrderEntity::class, AddressEntity::class], version = 6, exportSchema = false)
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun productDao(): ProductDao
     abstract fun cartDao(): CartDao
     abstract fun orderDao(): OrderDao
+    abstract fun addressDao(): AddressDao
 
     companion object {
         @Volatile
@@ -33,7 +34,18 @@ abstract class AppDatabase : RoomDatabase() {
                             super.onCreate(db)
                             scope.launch(Dispatchers.IO) {
                                 val database = getDatabase(context, scope)
-                                populateDatabase(database.productDao(), database.orderDao(), database.cartDao())
+                                populateDatabase(database.productDao(), database.orderDao(), database.cartDao(), database.addressDao())
+                            }
+                        }
+                        
+                        override fun onOpen(db: SupportSQLiteDatabase) {
+                            super.onOpen(db)
+                            scope.launch(Dispatchers.IO) {
+                                val database = getDatabase(context, scope)
+                                // Jika produk kosong setelah migrasi, paksa populate lagi
+                                if (database.productDao().getAllProductsSync().isEmpty()) {
+                                    populateDatabase(database.productDao(), database.orderDao(), database.cartDao(), database.addressDao())
+                                }
                             }
                         }
                     })
@@ -43,7 +55,7 @@ abstract class AppDatabase : RoomDatabase() {
             }
         }
 
-        private suspend fun populateDatabase(productDao: ProductDao, orderDao: OrderDao, cartDao: CartDao) {
+        private suspend fun populateDatabase(productDao: ProductDao, orderDao: OrderDao, cartDao: CartDao, addressDao: AddressDao) {
             val dummyProducts = listOf(
                 ProductEntity(name = "Bawang Merah", price = 40000, unit = "kg", stock = 50, category = "Sayur", imageName = "img_bawang_merah"),
                 ProductEntity(name = "Cabe Rawit Merah", price = 50000, unit = "kg", stock = 25, category = "Sayur", imageName = "img_cabe_rawit"),
@@ -52,12 +64,17 @@ abstract class AppDatabase : RoomDatabase() {
             )
             productDao.insertProducts(dummyProducts)
             
-            // Seed Cart
-            cartDao.insertCartItem(CartEntity(1, "Bawang Merah", 40000, 1, "img_bawang_merah"))
-            cartDao.insertCartItem(CartEntity(2, "Cabe Rawit Merah", 50000, 2, "img_cabe_rawit"))
+            // Seed Cart (termasuk info stok dari products table)
+            cartDao.insertCartItem(CartEntity(1, "Bawang Merah", 40000, 1, "img_bawang_merah", 50))
+            cartDao.insertCartItem(CartEntity(2, "Cabe Rawit Merah", 50000, 2, "img_cabe_rawit", 25))
             
-            // Seed Orders
+            // Seed Address
             val defaultAddress = "Jl. Sudirman No. 45, Jakarta Pusat"
+            addressDao.insertAddress(AddressEntity(
+                title = "Rumah",
+                fullAddress = defaultAddress,
+                isDefault = true
+            ))
             val initialOrders = listOf(
                 OrderEntity(java.util.UUID.randomUUID().toString(), 1, "Toko Bibit Unggul", "Bawang Merah", "img_bawang_merah", 40000, 2, "Belum Bayar", 1, timestamp = System.currentTimeMillis() - 10000, address = defaultAddress, paymentMethod = ""),
                 OrderEntity(java.util.UUID.randomUUID().toString(), 5, "AgroCare Official", "Pupuk Kompos Organik 5Kg", "ic_organic_fertilizer", 75000, 1, "Belum Bayar", 1, timestamp = System.currentTimeMillis() - 20000, address = defaultAddress, paymentMethod = ""),

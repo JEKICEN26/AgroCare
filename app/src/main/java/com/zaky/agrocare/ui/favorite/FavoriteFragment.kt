@@ -65,13 +65,15 @@ class FavoriteFragment : Fragment() {
                     },
                     onAddToCartClick = { product ->
                         val priceInt = product.price.replace(Regex("[^0-9]"), "").toIntOrNull() ?: 0
+                        val stock = com.zaky.agrocare.data.StockManager.getStock(product.id)
                         cartViewModel.addToCart(
                             CartItem(
                                 id = product.id,
                                 name = product.name,
                                 price = priceInt,
                                 imageUrl = product.imageUrl,
-                                quantity = 1
+                                quantity = 1,
+                                stock = stock
                             )
                         )
                         Toast.makeText(requireContext(), "Dimasukkan ke keranjang", Toast.LENGTH_SHORT).show()

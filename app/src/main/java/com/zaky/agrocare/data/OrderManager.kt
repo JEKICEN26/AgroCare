@@ -111,6 +111,7 @@ object OrderManager {
 
     /**
      * Bayar pesanan: status berubah dari "Belum Bayar" → "Dikemas"
+     * Otomatis mengurangi stok produk saat status menjadi "Dikemas"
      */
     fun payOrder(orderId: String, paymentMethod: String) {
         if (!isInitialized) return
@@ -121,6 +122,9 @@ object OrderManager {
                 entity.statusId = 2
                 entity.paymentMethod = paymentMethod
                 orderDao.updateOrder(entity)
+                
+                // Kurangi stok produk secara otomatis saat pesanan dikemas
+                StockManager.reduceStock(entity.productId, entity.quantity)
             }
         }
     }

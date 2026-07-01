@@ -154,4 +154,20 @@
             android:defaultValue="0" />
     </fragment>
 
+    <fragment
+        android:id="@+id/navigation_delivery_address"
+        android:name="com.zaky.agrocare.ui.address.DeliveryAddressFragment"
+        android:label="Alamat Pengiriman"
+        tools:layout="@layout/fragment_delivery_address">
+        <action
+            android:id="@+id/action_deliveryAddressFragment_to_addAddressFragment"
+            app:destination="@id/navigation_add_address" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_add_address"
+        android:name="com.zaky.agrocare.ui.address.AddAddressFragment"
+        android:label="Tambah Alamat"
+        tools:layout="@layout/fragment_add_address" />
+
 </navigation>

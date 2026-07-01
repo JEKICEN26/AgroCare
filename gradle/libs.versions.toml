@@ -14,6 +14,9 @@ lifecycle = "2.8.7"
 coil = "2.7.0"
 room = "2.6.1"
 ksp = "2.0.21-1.0.27"
+playServicesMaps = "19.0.0"
+playServicesLocation = "21.3.0"
+osmdroid = "6.1.18"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -40,6 +43,13 @@ androidx-room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = 
 
 # Coil (Image Loading)
 coil = { group = "io.coil-kt", name = "coil", version.ref = "coil" }
+
+# Google Maps & Location
+play-services-maps = { group = "com.google.android.gms", name = "play-services-maps", version.ref = "playServicesMaps" }
+play-services-location = { group = "com.google.android.gms", name = "play-services-location", version.ref = "playServicesLocation" }
+
+# OSMDroid
+osmdroid = { group = "org.osmdroid", name = "osmdroid-android", version.ref = "osmdroid" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
