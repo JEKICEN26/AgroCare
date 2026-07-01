@@ -59,14 +59,6 @@
                     android:id="@+id/mapView"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
-                    
-                <ImageView
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:layout_gravity="center"
-                    android:layout_marginBottom="24dp"
-                    android:src="@android:drawable/ic_dialog_map"
-                    app:tint="#D32F2F" />
             </FrameLayout>
 
             <TextView
