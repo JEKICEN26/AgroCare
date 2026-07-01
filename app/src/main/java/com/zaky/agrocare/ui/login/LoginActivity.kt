@@ -40,7 +40,7 @@ class LoginActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            if (username == "user123" && password == "123") {
+            if (username == "alphard" && password == sessionManager.getPassword()) {
                 sessionManager.setLogin(true)
                 Toast.makeText(this, "Login Berhasil", Toast.LENGTH_SHORT).show()
                 navigateToMain()

@@ -170,4 +170,10 @@
         android:label="Tambah Alamat"
         tools:layout="@layout/fragment_add_address" />
 
+    <fragment
+        android:id="@+id/navigation_settings_profile"
+        android:name="com.zaky.agrocare.ui.profile.SettingsProfileFragment"
+        android:label="Pengaturan Profil"
+        tools:layout="@layout/fragment_settings_profile" />
+
 </navigation>

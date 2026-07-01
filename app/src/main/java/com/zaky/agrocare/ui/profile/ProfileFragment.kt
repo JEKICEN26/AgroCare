@@ -162,6 +162,11 @@ class ProfileFragment : Fragment() {
             findNavController().navigate(R.id.navigation_delivery_address)
         }
 
+        // Navigation to Settings Profile
+        binding.btnSettingsProfile.setOnClickListener {
+            findNavController().navigate(R.id.navigation_settings_profile)
+        }
+
         // Logout interaction
         binding.btnLogout.setOnClickListener {
             val sessionManager = com.zaky.agrocare.utils.SessionManager(requireContext())
@@ -189,6 +194,19 @@ class ProfileFragment : Fragment() {
                 val remaining = 5 - resetClickCount
                 Toast.makeText(requireContext(), "Ketuk $remaining kali lagi untuk mereset simulasi data", Toast.LENGTH_SHORT).show()
             }
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        val sessionManager = com.zaky.agrocare.utils.SessionManager(requireContext())
+        binding.tvProfileName.text = sessionManager.getName()
+
+        val imageUriString = sessionManager.getProfileImage()
+        if (imageUriString != null) {
+            val uri = android.net.Uri.parse(imageUriString)
+            binding.ivProfileImage.setImageURI(uri)
+            binding.ivProfileImage.visibility = View.VISIBLE
         }
     }
 
