@@ -10,12 +10,15 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.zaky.agrocare.R
+import com.zaky.agrocare.data.OrderManager
 import com.zaky.agrocare.databinding.FragmentProfileBinding
 
 class ProfileFragment : Fragment() {
 
     private var _binding: FragmentProfileBinding? = null
     private val binding get() = _binding!!
+    
+    private var resetClickCount = 0
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -30,79 +33,112 @@ class ProfileFragment : Fragment() {
         }
 
         setupMenuListeners()
-        setupPaymentSimulation()
+        setupOrderNavigation()
+
+        // Observe perubahan data pesanan secara live untuk update badge
+        OrderManager.orders.observe(viewLifecycleOwner) {
+            updateBadges()
+        }
 
         return binding.root
     }
 
-    private fun setupPaymentSimulation() {
-        // Set initial state colors
+    private fun updateBadges() {
         val colorPrimary = ContextCompat.getColor(requireContext(), R.color.colorPrimary)
         val colorGray = ContextCompat.getColor(requireContext(), R.color.colorTextSecondary)
-        
-        binding.ivStatusUnpaid.setColorFilter(colorPrimary)
-        
-        binding.llStatusUnpaid.setOnClickListener {
-            Toast.makeText(requireContext(), "Memproses Pembayaran...", Toast.LENGTH_SHORT).show()
-            it.postDelayed({ animateToPacked(colorPrimary, colorGray) }, 1500)
+
+        // Belum Bayar
+        val unpaidCount = OrderManager.getCountByStatus(1)
+        if (unpaidCount > 0) {
+            binding.badgeUnpaid.visibility = View.VISIBLE
+            binding.badgeUnpaid.text = unpaidCount.toString()
+            binding.tvSubLabelUnpaid.visibility = View.VISIBLE
+            binding.tvSubLabelUnpaid.text = "$unpaidCount Pesanan"
+            binding.ivStatusUnpaid.setColorFilter(colorPrimary)
+        } else {
+            binding.badgeUnpaid.visibility = View.GONE
+            binding.tvSubLabelUnpaid.visibility = View.INVISIBLE
+            binding.ivStatusUnpaid.setColorFilter(colorGray)
+        }
+
+        // Dikemas
+        val packedCount = OrderManager.getCountByStatus(2)
+        if (packedCount > 0) {
+            binding.badgePacked.visibility = View.VISIBLE
+            binding.badgePacked.text = packedCount.toString()
+            binding.tvSubLabelPacked.visibility = View.VISIBLE
+            binding.tvSubLabelPacked.text = "$packedCount Pesanan"
+            binding.ivStatusPacked.setColorFilter(colorPrimary)
+        } else {
+            binding.badgePacked.visibility = View.GONE
+            binding.tvSubLabelPacked.visibility = View.INVISIBLE
+            binding.ivStatusPacked.setColorFilter(colorGray)
+        }
+
+        // Dikirim
+        val sentCount = OrderManager.getCountByStatus(3)
+        if (sentCount > 0) {
+            binding.badgeSent.visibility = View.VISIBLE
+            binding.badgeSent.text = sentCount.toString()
+            binding.tvSubLabelSent.visibility = View.VISIBLE
+            binding.tvSubLabelSent.text = "$sentCount Pesanan"
+            binding.ivStatusSent.setColorFilter(colorPrimary)
+        } else {
+            binding.badgeSent.visibility = View.GONE
+            binding.tvSubLabelSent.visibility = View.INVISIBLE
+            binding.ivStatusSent.setColorFilter(colorGray)
+        }
+
+        // Beri Nilai (count pesanan selesai yang belum di-rating)
+        val unratedCount = OrderManager.getUnratedFinishedCount()
+        if (unratedCount > 0) {
+            binding.badgeRate.visibility = View.VISIBLE
+            binding.badgeRate.text = unratedCount.toString()
+            binding.tvSubLabelRate.visibility = View.VISIBLE
+            binding.tvSubLabelRate.text = "$unratedCount Pesanan"
+            binding.ivStatusRate.setColorFilter(colorPrimary)
+        } else {
+            binding.badgeRate.visibility = View.GONE
+            binding.tvSubLabelRate.visibility = View.INVISIBLE
+            binding.ivStatusRate.setColorFilter(colorGray)
         }
     }
 
-    private fun animateToPacked(colorPrimary: Int, colorGray: Int) {
-        // Unpaid -> Packed
-        binding.badgeUnpaid.visibility = View.GONE
-        binding.tvSubLabelUnpaid.visibility = View.INVISIBLE
-        binding.ivStatusUnpaid.setColorFilter(colorGray)
+    private fun setupOrderNavigation() {
+        val navController = findNavController()
 
-        binding.badgePacked.visibility = View.VISIBLE
-        binding.badgePacked.text = "1"
-        binding.tvSubLabelPacked.visibility = View.VISIBLE
-        binding.tvSubLabelPacked.text = "1 Pesanan"
-        binding.ivStatusPacked.setColorFilter(colorPrimary)
-        
-        binding.ivStatusPacked.animate().scaleX(1.3f).scaleY(1.3f).setDuration(200).withEndAction {
-            binding.ivStatusPacked.animate().scaleX(1.0f).scaleY(1.0f).setDuration(200).start()
-        }.start()
+        // Fungsi helper untuk menavigasi ke tab spesifik
+        fun navigateToOrders(tabIndex: Int) {
+            val bundle = Bundle().apply {
+                putInt("initialTab", tabIndex)
+            }
+            navController.navigate(R.id.navigation_my_orders, bundle)
+        }
 
-        binding.root.postDelayed({ animateToSent(colorPrimary, colorGray) }, 2000)
-    }
+        // Klik "Pesanan Saya" (Lihat Semua)
+        binding.cvOrders.setOnClickListener {
+            navigateToOrders(0) // Tab: Semua
+        }
 
-    private fun animateToSent(colorPrimary: Int, colorGray: Int) {
-        // Packed -> Sent
-        binding.badgePacked.visibility = View.GONE
-        binding.tvSubLabelPacked.visibility = View.INVISIBLE
-        binding.ivStatusPacked.setColorFilter(colorGray)
+        // Klik "Belum Bayar"
+        binding.llStatusUnpaid.setOnClickListener {
+            navigateToOrders(1) // Tab: Belum Bayar
+        }
 
-        binding.badgeSent.visibility = View.VISIBLE
-        binding.badgeSent.text = "1"
-        binding.tvSubLabelSent.visibility = View.VISIBLE
-        binding.tvSubLabelSent.text = "1 Pesanan"
-        binding.ivStatusSent.setColorFilter(colorPrimary)
-        
-        binding.ivStatusSent.animate().scaleX(1.3f).scaleY(1.3f).setDuration(200).withEndAction {
-            binding.ivStatusSent.animate().scaleX(1.0f).scaleY(1.0f).setDuration(200).start()
-        }.start()
+        // Klik "Dikemas"
+        binding.llStatusPacked.setOnClickListener {
+            navigateToOrders(2) // Tab: Dikemas
+        }
 
-        binding.root.postDelayed({ animateToRate(colorPrimary, colorGray) }, 2000)
-    }
+        // Klik "Dikirim"
+        binding.llStatusSent.setOnClickListener {
+            navigateToOrders(3) // Tab: Dikirim
+        }
 
-    private fun animateToRate(colorPrimary: Int, colorGray: Int) {
-        // Sent -> Rate
-        binding.badgeSent.visibility = View.GONE
-        binding.tvSubLabelSent.visibility = View.INVISIBLE
-        binding.ivStatusSent.setColorFilter(colorGray)
-
-        binding.badgeRate.visibility = View.VISIBLE
-        binding.badgeRate.text = "1"
-        binding.tvSubLabelRate.visibility = View.VISIBLE
-        binding.tvSubLabelRate.text = "1 Pesanan"
-        binding.ivStatusRate.setColorFilter(colorPrimary)
-        
-        binding.ivStatusRate.animate().scaleX(1.3f).scaleY(1.3f).setDuration(200).withEndAction {
-            binding.ivStatusRate.animate().scaleX(1.0f).scaleY(1.0f).setDuration(200).start()
-        }.start()
-        
-        Toast.makeText(requireContext(), "Pesanan telah sampai! Silakan beri nilai.", Toast.LENGTH_LONG).show()
+        // Klik "Beri Nilai"
+        binding.llStatusRate.setOnClickListener {
+            navigateToOrders(4) // Tab: Selesai
+        }
     }
 
     private fun setupMenuListeners() {
@@ -132,8 +168,22 @@ class ProfileFragment : Fragment() {
             startActivity(intent)
         }
         
-        binding.btnSettings.setOnClickListener {
-             Toast.makeText(requireContext(), "Pengaturan", Toast.LENGTH_SHORT).show()
+
+        
+        // Fitur rahasia (Easter Egg) untuk mereset simulasi data
+        binding.chipVendor.setOnClickListener {
+            resetClickCount++
+            if (resetClickCount >= 5) {
+                OrderManager.resetData()
+                val cartViewModel = ViewModelProvider(requireActivity()).get(com.zaky.agrocare.ui.cart.CartViewModel::class.java)
+                cartViewModel.clearCart()
+                
+                Toast.makeText(requireContext(), "Data Simulasi Direset ke Awal!", Toast.LENGTH_SHORT).show()
+                resetClickCount = 0
+            } else {
+                val remaining = 5 - resetClickCount
+                Toast.makeText(requireContext(), "Ketuk $remaining kali lagi untuk mereset simulasi data", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 

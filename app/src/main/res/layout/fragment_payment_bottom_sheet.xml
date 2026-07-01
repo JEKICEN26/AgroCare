@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="20dp"
+    android:background="@drawable/bg_bottom_sheet">
+
+    <View
+        android:layout_width="40dp"
+        android:layout_height="4dp"
+        android:layout_gravity="center_horizontal"
+        android:background="#E0E0E0"
+        android:layout_marginBottom="16dp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Pilih Metode Pembayaran"
+        android:textStyle="bold"
+        android:textSize="18sp"
+        android:textColor="@color/colorTextPrimary"
+        android:layout_marginBottom="16dp"/>
+
+    <RadioGroup
+        android:id="@+id/rgPaymentMethod"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp">
+
+        <RadioButton
+            android:id="@+id/rbVirtualAccount"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Virtual Account (BCA/Mandiri/BNI)"
+            android:textSize="16sp"
+            android:textColor="@color/colorTextPrimary"
+            android:padding="8dp"/>
+
+        <RadioButton
+            android:id="@+id/rbCreditCard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Kartu Kredit"
+            android:textSize="16sp"
+            android:textColor="@color/colorTextPrimary"
+            android:padding="8dp"/>
+
+    </RadioGroup>
+
+    <!-- Layout Virtual Account -->
+    <LinearLayout
+        android:id="@+id/llVirtualAccount"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Nomor Virtual Account:"
+            android:textSize="14sp"
+            android:textColor="@color/colorTextSecondary"
+            android:layout_marginBottom="4dp"/>
+
+        <TextView
+            android:id="@+id/tvVaNumber"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="8801234567890123"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="@color/colorPrimary"
+            android:layout_marginBottom="16dp"
+            android:gravity="center"
+            android:background="#F0F8FF"
+            android:padding="12dp"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnCheckVaPayment"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="Cek Pembayaran"
+            android:textColor="@android:color/white"
+            android:textStyle="bold"
+            app:cornerRadius="8dp"
+            app:backgroundTint="@color/colorPrimary"/>
+    </LinearLayout>
+
+    <!-- Layout Credit Card -->
+    <LinearLayout
+        android:id="@+id/llCreditCard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <EditText
+            android:id="@+id/etCardNumber"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Nomor Kartu Kredit"
+            android:inputType="number"
+            android:maxLength="16"
+            android:padding="12dp"
+            android:background="@drawable/bg_search_bar"
+            android:layout_marginBottom="12dp"/>
+
+        <EditText
+            android:id="@+id/etCardCvc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="CVC (3 digit)"
+            android:inputType="number"
+            android:maxLength="3"
+            android:padding="12dp"
+            android:background="@drawable/bg_search_bar"
+            android:layout_marginBottom="16dp"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnCheckCcPayment"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="Cek Pembayaran"
+            android:textColor="@android:color/white"
+            android:textStyle="bold"
+            app:cornerRadius="8dp"
+            app:backgroundTint="@color/colorPrimary"/>
+    </LinearLayout>
+
+</LinearLayout>

@@ -11,6 +11,7 @@ import androidx.navigation.ui.setupWithNavController
 import com.zaky.agrocare.databinding.ActivityMainBinding
 import com.zaky.agrocare.ui.cart.CartBottomSheetFragment
 import com.zaky.agrocare.ui.cart.CartViewModel
+import com.zaky.agrocare.data.OrderManager
 
 class MainActivity : AppCompatActivity() {
 
@@ -22,6 +23,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+        OrderManager.init(applicationContext)
         
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -36,9 +38,9 @@ class MainActivity : AppCompatActivity() {
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
                 R.id.navigation_checkout -> {
+                    // Sembunyikan topbar utama dan bottomnav karena Checkout punya appbar sendiri
                     binding.bottomNav.visibility = View.GONE
-                    binding.topBar.visibility = View.VISIBLE
-                    binding.etSearch.visibility = View.GONE
+                    binding.topBar.visibility = View.GONE
                 }
                 R.id.navigation_product_detail -> {
                     binding.bottomNav.visibility = View.GONE
@@ -47,6 +49,11 @@ class MainActivity : AppCompatActivity() {
                 }
                 R.id.navigation_search -> {
                     // Sembunyikan topbar dan bottomnav saat di search overlay
+                    binding.bottomNav.visibility = View.GONE
+                    binding.topBar.visibility = View.GONE
+                }
+                R.id.navigation_my_orders -> {
+                    // Sembunyikan topbar utama dan bottomnav karena MyOrders punya appbar sendiri
                     binding.bottomNav.visibility = View.GONE
                     binding.topBar.visibility = View.GONE
                 }

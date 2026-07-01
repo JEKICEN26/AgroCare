@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.zaky.agrocare.R
+import com.zaky.agrocare.data.OrderManager
 import com.zaky.agrocare.databinding.FragmentCheckoutBinding
 import com.zaky.agrocare.ui.cart.CartViewModel
 import com.zaky.agrocare.utils.toRupiah
@@ -53,6 +54,10 @@ class CheckoutFragment : Fragment() {
     }
 
     private fun setupListeners() {
+        binding.btnBack.setOnClickListener {
+            findNavController().navigateUp()
+        }
+
         binding.btnFinishCheckout.setOnClickListener {
             val address = binding.etAddress.text.toString()
             
@@ -62,6 +67,12 @@ class CheckoutFragment : Fragment() {
                 return@setOnClickListener
             }
 
+            // Ambil item keranjang saat ini dan buat pesanan nyata
+            val cartItems = viewModel.cartItems.value
+            if (!cartItems.isNullOrEmpty()) {
+                OrderManager.addOrderFromCart(cartItems, address)
+            }
+
             // Tampilkan Dialog Sukses
             showSuccessDialog()
         }
@@ -69,21 +80,28 @@ class CheckoutFragment : Fragment() {
 
     private fun showSuccessDialog() {
         AlertDialog.Builder(requireContext())
-            .setTitle("Pembayaran Berhasil!")
-            .setMessage("Pesanan Anda sedang diproses.")
-            .setPositiveButton("OK") { _, _ ->
+            .setTitle("Pesanan Berhasil Dibuat!")
+            .setMessage("Pesanan Anda telah masuk ke daftar pesanan dengan status 'Belum Bayar'. Silakan lanjutkan pembayaran di halaman Pesanan Saya.")
+            .setPositiveButton("Lihat Pesanan") { _, _ ->
                 // Tambahkan notifikasi
                 com.zaky.agrocare.ui.notifications.NotificationManager.addNotification(
+                    requireContext(),
                     com.zaky.agrocare.ui.notifications.NotificationItem(
-                        title = "Pembayaran Berhasil!",
-                        description = "Pembayaran pesanan Anda telah berhasil dikonfirmasi. Pesanan sedang disiapkan.",
+                        title = "Pesanan Berhasil Dibuat!",
+                        description = "Pesanan Anda telah dibuat. Silakan selesaikan pembayaran di halaman Pesanan Saya.",
                         timestamp = "Baru saja"
                     )
                 )
                 // Bersihkan keranjang setelah checkout berhasil
                 viewModel.clearCart()
-                // Kembali ke Home
-                findNavController().popBackStack(R.id.navigation_home, false)
+                // Navigasi ke Pesanan Saya tab Belum Bayar
+                val bundle = Bundle().apply {
+                    putInt("initialTab", 1) // Tab: Belum Bayar
+                }
+                val navOptions = androidx.navigation.NavOptions.Builder()
+                    .setPopUpTo(R.id.navigation_home, false)
+                    .build()
+                findNavController().navigate(R.id.navigation_my_orders, bundle, navOptions)
             }
             .setCancelable(false)
             .show()

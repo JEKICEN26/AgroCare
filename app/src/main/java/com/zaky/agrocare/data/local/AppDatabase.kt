@@ -9,10 +9,12 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-@Database(entities = [ProductEntity::class], version = 1, exportSchema = false)
+@Database(entities = [ProductEntity::class, CartEntity::class, OrderEntity::class], version = 4, exportSchema = false)
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun productDao(): ProductDao
+    abstract fun cartDao(): CartDao
+    abstract fun orderDao(): OrderDao
 
     companion object {
         @Volatile
@@ -25,12 +27,13 @@ abstract class AppDatabase : RoomDatabase() {
                     AppDatabase::class.java,
                     "agrocare_database"
                 )
+                    .fallbackToDestructiveMigration()
                     .addCallback(object : RoomDatabase.Callback() {
                         override fun onCreate(db: SupportSQLiteDatabase) {
                             super.onCreate(db)
                             scope.launch(Dispatchers.IO) {
-                                val dao = getDatabase(context, scope).productDao()
-                                populateDatabase(dao)
+                                val database = getDatabase(context, scope)
+                                populateDatabase(database.productDao(), database.orderDao(), database.cartDao())
                             }
                         }
                     })
@@ -40,7 +43,7 @@ abstract class AppDatabase : RoomDatabase() {
             }
         }
 
-        private suspend fun populateDatabase(productDao: ProductDao) {
+        private suspend fun populateDatabase(productDao: ProductDao, orderDao: OrderDao, cartDao: CartDao) {
             val dummyProducts = listOf(
                 ProductEntity(name = "Bawang Merah", price = 40000, unit = "kg", stock = 50, category = "Sayur", imageName = "img_bawang_merah"),
                 ProductEntity(name = "Cabe Rawit Merah", price = 50000, unit = "kg", stock = 25, category = "Sayur", imageName = "img_cabe_rawit"),
@@ -48,6 +51,21 @@ abstract class AppDatabase : RoomDatabase() {
                 ProductEntity(name = "Wortel", price = 8000, unit = "kg", stock = 100, category = "Sayur", imageName = "img_wortel")
             )
             productDao.insertProducts(dummyProducts)
+            
+            // Seed Cart
+            cartDao.insertCartItem(CartEntity(1, "Bawang Merah", 40000, 1, "img_bawang_merah"))
+            cartDao.insertCartItem(CartEntity(2, "Cabe Rawit Merah", 50000, 2, "img_cabe_rawit"))
+            
+            // Seed Orders
+            val defaultAddress = "Jl. Sudirman No. 45, Jakarta Pusat"
+            val initialOrders = listOf(
+                OrderEntity(java.util.UUID.randomUUID().toString(), 1, "Toko Bibit Unggul", "Bawang Merah", "img_bawang_merah", 40000, 2, "Belum Bayar", 1, timestamp = System.currentTimeMillis() - 10000, address = defaultAddress, paymentMethod = ""),
+                OrderEntity(java.util.UUID.randomUUID().toString(), 5, "AgroCare Official", "Pupuk Kompos Organik 5Kg", "ic_organic_fertilizer", 75000, 1, "Belum Bayar", 1, timestamp = System.currentTimeMillis() - 20000, address = defaultAddress, paymentMethod = ""),
+                OrderEntity(java.util.UUID.randomUUID().toString(), 3, "Tani Maju", "Tomat Cherry Hidroponik", "img_tomat", 30000, 3, "Dikirim", 3, timestamp = System.currentTimeMillis() - 30000, address = defaultAddress, paymentMethod = "Virtual Account"),
+                OrderEntity(java.util.UUID.randomUUID().toString(), 2, "Sayur Segar", "Cabe Rawit Merah", "img_cabe_rawit", 50000, 1, "Selesai", 4, timestamp = System.currentTimeMillis() - 40000, address = defaultAddress, paymentMethod = "Kartu Kredit"),
+                OrderEntity(java.util.UUID.randomUUID().toString(), 4, "Toko Bibit Unggul", "Wortel", "img_wortel", 8000, 5, "Selesai", 4, timestamp = System.currentTimeMillis() - 50000, address = defaultAddress, paymentMethod = "Virtual Account")
+            )
+            orderDao.insertOrders(initialOrders)
         }
     }
 }

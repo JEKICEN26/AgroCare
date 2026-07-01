@@ -1,69 +1,79 @@
 package com.zaky.agrocare.ui.cart
 
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.map
+import androidx.lifecycle.viewModelScope
 import com.zaky.agrocare.data.CartItem
+import com.zaky.agrocare.data.local.AppDatabase
+import com.zaky.agrocare.data.local.CartEntity
+import kotlinx.coroutines.launch
 
-class CartViewModel : ViewModel() {
+class CartViewModel(application: Application) : AndroidViewModel(application) {
 
-    private val _cartItems = MutableLiveData<List<CartItem>>(emptyList())
-    val cartItems: LiveData<List<CartItem>> = _cartItems
+    private val cartDao = AppDatabase.getDatabase(application, viewModelScope).cartDao()
 
-    val totalPrice: LiveData<Int> = _cartItems.map { items ->
+    // Ambil data langsung dari Room (Flow -> LiveData)
+    val cartItems: LiveData<List<CartItem>> = cartDao.getAllCartItems().asLiveData().map { entities ->
+        entities.map { entity ->
+            CartItem(entity.id, entity.name, entity.price, entity.quantity, entity.imageUrl)
+        }
+    }
+
+    val totalPrice: LiveData<Int> = cartItems.map { items ->
         items.sumOf { it.price * it.quantity }
     }
 
-    val totalItems: LiveData<Int> = _cartItems.map { items ->
+    val totalItems: LiveData<Int> = cartItems.map { items ->
         items.sumOf { it.quantity }
     }
 
     fun addToCart(item: CartItem) {
-        val currentList = _cartItems.value.orEmpty().toMutableList()
-        val index = currentList.indexOfFirst { it.id == item.id }
-
-        if (index != -1) {
-            val existingItem = currentList[index]
-            currentList[index] = existingItem.copy(quantity = existingItem.quantity + item.quantity)
-        } else {
-            currentList.add(item)
+        viewModelScope.launch {
+            val existingEntity = cartDao.getCartItemById(item.id)
+            if (existingEntity != null) {
+                cartDao.updateCartItem(existingEntity.copy(quantity = existingEntity.quantity + item.quantity))
+            } else {
+                cartDao.insertCartItem(CartEntity(item.id, item.name, item.price, item.quantity, item.imageUrl))
+            }
         }
-        _cartItems.value = ArrayList(currentList)
     }
 
     fun increaseQuantity(id: Int) {
-        val currentList = _cartItems.value.orEmpty().toMutableList()
-        val index = currentList.indexOfFirst { it.id == id }
-        if (index != -1) {
-            val item = currentList[index]
-            currentList[index] = item.copy(quantity = item.quantity + 1)
-            _cartItems.value = ArrayList(currentList)
+        viewModelScope.launch {
+            val existingEntity = cartDao.getCartItemById(id)
+            if (existingEntity != null) {
+                cartDao.updateCartItem(existingEntity.copy(quantity = existingEntity.quantity + 1))
+            }
         }
     }
 
     fun decreaseQuantity(id: Int) {
-        val currentList = _cartItems.value.orEmpty().toMutableList()
-        val index = currentList.indexOfFirst { it.id == id }
-        if (index != -1) {
-            val item = currentList[index]
-            if (item.quantity > 1) {
-                currentList[index] = item.copy(quantity = item.quantity - 1)
-            } else {
-                currentList.removeAt(index)
+        viewModelScope.launch {
+            val existingEntity = cartDao.getCartItemById(id)
+            if (existingEntity != null) {
+                if (existingEntity.quantity > 1) {
+                    cartDao.updateCartItem(existingEntity.copy(quantity = existingEntity.quantity - 1))
+                } else {
+                    cartDao.deleteCartItem(id)
+                }
             }
-            _cartItems.value = ArrayList(currentList)
         }
     }
 
     fun removeCartItem(id: Int) {
-        val currentList = _cartItems.value.orEmpty().toMutableList()
-        currentList.removeAll { it.id == id }
-        _cartItems.value = ArrayList(currentList)
+        viewModelScope.launch {
+            cartDao.deleteCartItem(id)
+        }
     }
 
     fun clearCart() {
-        _cartItems.value = emptyList()
+        viewModelScope.launch {
+            cartDao.clearCart()
+        }
     }
 
     private val _searchQuery = MutableLiveData<String>("")

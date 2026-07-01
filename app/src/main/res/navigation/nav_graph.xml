@@ -143,4 +143,15 @@
             app:argType="string" />
     </fragment>
 
+    <fragment
+        android:id="@+id/navigation_my_orders"
+        android:name="com.zaky.agrocare.ui.orders.MyOrdersFragment"
+        android:label="Pesanan Saya"
+        tools:layout="@layout/fragment_my_orders">
+        <argument
+            android:name="initialTab"
+            app:argType="integer"
+            android:defaultValue="0" />
+    </fragment>
+
 </navigation>

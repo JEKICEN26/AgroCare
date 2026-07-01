@@ -29,7 +29,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="Grafik Harga Komoditas"
+            android:text="Prediksi Harga Komoditas"
             android:textColor="@color/text_primary"
             android:textSize="26sp"
             android:textStyle="bold" />
@@ -38,16 +38,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:text="Sumber: Simulasi Data BPS"
+            android:text="Ditenagai oleh AgroCare Machine Learning"
             android:textColor="@color/text_secondary"
             android:textSize="12sp" />
             
-        <Spinner
-            android:id="@+id/spinnerCommodity"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:layout_marginTop="16dp"
-            android:background="@android:drawable/btn_dropdown" />
     </LinearLayout>
 
     <com.google.android.material.card.MaterialCardView
@@ -59,28 +53,11 @@
         app:layout_constraintTop_toBottomOf="@id/header"
         app:layout_constraintBottom_toBottomOf="parent">
 
-        <LinearLayout
+        <WebView
+            android:id="@+id/webView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:padding="16dp">
-
-            <TextView
-                android:id="@+id/tvChartTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Pergerakan Harga (6 Bulan Terakhir)"
-                android:textColor="@color/text_primary"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                android:layout_marginBottom="16dp"/>
-
-            <com.github.mikephil.charting.charts.LineChart
-                android:id="@+id/lineChart"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-                
-        </LinearLayout>
+            android:layout_height="match_parent" />
+            
     </com.google.android.material.card.MaterialCardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
