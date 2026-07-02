@@ -36,11 +36,8 @@ class SearchFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        // Inisialisasi ViewModel dengan Factory secara eksplisit untuk mencegah NoSuchMethodException
-        val database = AppDatabase.getDatabase(requireContext().applicationContext, viewLifecycleOwner.lifecycleScope)
-        val factory = SearchViewModelFactory(database.productDao())
-        searchViewModel = ViewModelProvider(this, factory)[SearchViewModel::class.java]
+        // Inisialisasi ViewModel
+        searchViewModel = ViewModelProvider(this)[SearchViewModel::class.java]
 
         setupUI()
         setupRecyclerView()

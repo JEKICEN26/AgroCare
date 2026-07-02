@@ -3,13 +3,12 @@ package com.zaky.agrocare.ui.search
 import androidx.lifecycle.*
 import com.zaky.agrocare.data.Product
 import com.zaky.agrocare.data.SearchItem
-import com.zaky.agrocare.data.local.ProductDao
 import com.zaky.agrocare.ui.education.EducationModule
-import kotlinx.coroutines.flow.first
+import com.zaky.agrocare.data.remote.FirebaseRepository
 import kotlinx.coroutines.launch
 import java.util.Locale
 
-class SearchViewModel(private val dao: ProductDao) : ViewModel() {
+class SearchViewModel : ViewModel() {
 
     // Daftar produk hardcode sinkron dengan HomeViewModel
     private val hardcodedProducts = listOf(
@@ -41,8 +40,8 @@ class SearchViewModel(private val dao: ProductDao) : ViewModel() {
             val lowerQuery = query.lowercase()
             val resultList = mutableListOf<SearchItem>()
 
-            // Ambil data dari Room Database
-            val dbEntities = dao.getAllProducts().first()
+            // Ambil data dari Firebase Firestore
+            val dbEntities = FirebaseRepository.getAllProducts()
             val dbProducts = dbEntities.map { entity ->
                 Product(
                     id = entity.id,
@@ -81,16 +80,5 @@ class SearchViewModel(private val dao: ProductDao) : ViewModel() {
 
             _searchResults.value = resultList
         }
-    }
-}
-
-// Pastikan class ini ada di luar class SearchViewModel namun tetap di package yang sama
-class SearchViewModelFactory(private val dao: ProductDao) : ViewModelProvider.Factory {
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(SearchViewModel::class.java)) {
-            @Suppress("UNCHECKED_CAST")
-            return SearchViewModel(dao) as T
-        }
-        throw IllegalArgumentException("Unknown ViewModel class")
     }
 }

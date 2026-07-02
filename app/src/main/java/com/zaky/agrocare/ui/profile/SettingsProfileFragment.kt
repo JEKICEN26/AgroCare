@@ -80,14 +80,11 @@ class SettingsProfileFragment : Fragment() {
         // Save to room immediately if local
         if (sessionManager.getLoginType() == "local") {
             val oldName = sessionManager.getName()
-            val database = AppDatabase.getDatabase(requireContext(), lifecycleScope)
-            val userDao = database.userDao()
-
             lifecycleScope.launch(Dispatchers.IO) {
-                val user = userDao.getUserByUsername(oldName)
+                val user = com.zaky.agrocare.data.remote.FirebaseRepository.getUserByUsername(oldName)
                 if (user != null) {
                     val updatedUser = user.copy(profileImage = uri.toString())
-                    userDao.updateUser(updatedUser)
+                    com.zaky.agrocare.data.remote.FirebaseRepository.saveUser(updatedUser)
                 }
             }
         }
@@ -130,14 +127,11 @@ class SettingsProfileFragment : Fragment() {
 
             // Sinkronisasi ke Room jika tipe login adalah lokal
             if (sessionManager.getLoginType() == "local") {
-                val database = AppDatabase.getDatabase(requireContext(), lifecycleScope)
-                val userDao = database.userDao()
-
                 lifecycleScope.launch(Dispatchers.IO) {
-                    val user = userDao.getUserByUsername(oldName) // Cari berdasarkan username lama yang tersimpan
+                    val user = com.zaky.agrocare.data.remote.FirebaseRepository.getUserByUsername(oldName)
                     if (user != null) {
                         val updatedUser = user.copy(username = name, email = email, phone = phone)
-                        userDao.updateUser(updatedUser)
+                        com.zaky.agrocare.data.remote.FirebaseRepository.saveUser(updatedUser)
                     }
                     withContext(Dispatchers.Main) {
                         Toast.makeText(requireContext(), "Profil dan database berhasil diperbarui", Toast.LENGTH_SHORT).show()
@@ -234,13 +228,11 @@ class SettingsProfileFragment : Fragment() {
                     // Update ke Room juga jika user lokal
                     if (sessionManager.getLoginType() == "local") {
                         val name = sessionManager.getName()
-                        val database = AppDatabase.getDatabase(requireContext(), lifecycleScope)
-                        val userDao = database.userDao()
                         lifecycleScope.launch(Dispatchers.IO) {
-                            val user = userDao.getUserByUsername(name)
+                            val user = com.zaky.agrocare.data.remote.FirebaseRepository.getUserByUsername(name)
                             if (user != null) {
                                 val updatedUser = user.copy(passwordHash = newPassword)
-                                userDao.updateUser(updatedUser)
+                                com.zaky.agrocare.data.remote.FirebaseRepository.saveUser(updatedUser)
                             }
                         }
                     }

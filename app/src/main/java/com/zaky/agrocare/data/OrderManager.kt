@@ -3,29 +3,23 @@ package com.zaky.agrocare.data
 import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.asLiveData
-import androidx.lifecycle.map
-import com.zaky.agrocare.data.local.AppDatabase
-import com.zaky.agrocare.data.local.OrderDao
 import com.zaky.agrocare.data.local.OrderEntity
+import com.zaky.agrocare.data.remote.FirebaseRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import java.util.UUID
 
 /**
  * Singleton OrderManager sebagai sumber kebenaran tunggal untuk semua pesanan.
- * Mengelola state pesanan di seluruh aplikasi dengan dukungan Room Database.
+ * Mengelola state pesanan di seluruh aplikasi dengan dukungan Firebase Firestore.
  */
 object OrderManager {
 
-    private lateinit var orderDao: OrderDao
     private val scope = CoroutineScope(Dispatchers.IO)
     private var isInitialized = false
 
-    // _orders now act as an in-memory mirror if needed, but we expose the Room LiveData
-    private var _ordersLiveData: LiveData<List<Order>> = MutableLiveData(emptyList())
+    private var _ordersLiveData: MutableLiveData<List<Order>> = MutableLiveData(emptyList())
     
     // We keep a manual list so synchronous getters work (for simpler refactoring)
     private var currentOrders = mutableListOf<Order>()
@@ -34,10 +28,15 @@ object OrderManager {
 
     fun init(context: Context) {
         if (isInitialized) return
-        orderDao = AppDatabase.getDatabase(context, scope).orderDao()
         
-        // Map dari Entity ke Data Class UI
-        _ordersLiveData = orderDao.getAllOrders().map { entities ->
+        loadOrdersFromFirebase()
+        
+        isInitialized = true
+    }
+    
+    private fun loadOrdersFromFirebase() {
+        scope.launch {
+            val entities = FirebaseRepository.getAllOrders()
             val mapped = entities.map { entity ->
                 Order(
                     entity.id,
@@ -56,10 +55,8 @@ object OrderManager {
                 }
             }
             currentOrders = mapped.toMutableList()
-            mapped
-        }.asLiveData()
-        
-        isInitialized = true
+            _ordersLiveData.postValue(mapped)
+        }
     }
 
     /**
@@ -68,9 +65,7 @@ object OrderManager {
     fun resetData() {
         if (!isInitialized) return
         scope.launch {
-            orderDao.clearAllOrders()
-            // Data awal akan di-seed otomatis oleh AppDatabase saat kosong jika kita mau, 
-            // tapi untuk force reset kita insert ulang
+            FirebaseRepository.clearAllOrders()
             val defaultAddress = "Jl. Sudirman No. 45, Jakarta Pusat"
             val initialOrders = listOf(
                 OrderEntity(UUID.randomUUID().toString(), 1, "Toko Bibit Unggul", "Bawang Merah", "img_bawang_merah", 40000, 2, "Belum Bayar", 1, timestamp = System.currentTimeMillis() - 10000, address = defaultAddress, paymentMethod = ""),
@@ -79,7 +74,8 @@ object OrderManager {
                 OrderEntity(UUID.randomUUID().toString(), 2, "Sayur Segar", "Cabe Rawit Merah", "img_cabe_rawit", 50000, 1, "Selesai", 4, timestamp = System.currentTimeMillis() - 40000, address = defaultAddress, paymentMethod = "Kartu Kredit"),
                 OrderEntity(UUID.randomUUID().toString(), 4, "Toko Bibit Unggul", "Wortel", "img_wortel", 8000, 5, "Selesai", 4, timestamp = System.currentTimeMillis() - 50000, address = defaultAddress, paymentMethod = "Virtual Account")
             )
-            orderDao.insertOrders(initialOrders)
+            FirebaseRepository.saveOrders(initialOrders)
+            loadOrdersFromFirebase()
         }
     }
 
@@ -92,7 +88,7 @@ object OrderManager {
             val entities = items.map { item ->
                 OrderEntity(
                     id = UUID.randomUUID().toString(),
-                    productId = item.id, // ID asli dari produk!
+                    productId = item.id,
                     storeName = "AgroCare Official",
                     productName = item.name,
                     imageUrl = item.imageUrl,
@@ -105,7 +101,8 @@ object OrderManager {
                     paymentMethod = ""
                 )
             }
-            orderDao.insertOrders(entities)
+            FirebaseRepository.saveOrders(entities)
+            loadOrdersFromFirebase()
         }
     }
 
@@ -116,15 +113,17 @@ object OrderManager {
     fun payOrder(orderId: String, paymentMethod: String) {
         if (!isInitialized) return
         scope.launch {
-            val entity = orderDao.getOrderById(orderId)
+            val entity = FirebaseRepository.getOrderById(orderId)
             if (entity != null) {
                 entity.status = "Dikemas"
                 entity.statusId = 2
                 entity.paymentMethod = paymentMethod
-                orderDao.updateOrder(entity)
+                FirebaseRepository.updateOrder(entity)
                 
                 // Kurangi stok produk secara otomatis saat pesanan dikemas
                 StockManager.reduceStock(entity.productId, entity.quantity)
+                
+                loadOrdersFromFirebase()
             }
         }
     }
@@ -135,11 +134,12 @@ object OrderManager {
     fun cancelOrder(orderId: String) {
         if (!isInitialized) return
         scope.launch {
-            val entity = orderDao.getOrderById(orderId)
+            val entity = FirebaseRepository.getOrderById(orderId)
             if (entity != null) {
                 entity.status = "Dibatalkan"
                 entity.statusId = 5
-                orderDao.updateOrder(entity)
+                FirebaseRepository.updateOrder(entity)
+                loadOrdersFromFirebase()
             }
         }
     }
@@ -150,10 +150,11 @@ object OrderManager {
     fun rateOrder(orderId: String) {
         if (!isInitialized) return
         scope.launch {
-            val entity = orderDao.getOrderById(orderId)
+            val entity = FirebaseRepository.getOrderById(orderId)
             if (entity != null) {
                 entity.isRated = true
-                orderDao.updateOrder(entity)
+                FirebaseRepository.updateOrder(entity)
+                loadOrdersFromFirebase()
             }
         }
     }

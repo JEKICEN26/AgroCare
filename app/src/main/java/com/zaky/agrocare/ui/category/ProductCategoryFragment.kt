@@ -7,19 +7,19 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.zaky.agrocare.R
 import com.zaky.agrocare.data.CartItem
 import com.zaky.agrocare.data.Product
-import com.zaky.agrocare.data.local.AppDatabase
+import com.zaky.agrocare.data.remote.FirebaseRepository
 import com.zaky.agrocare.databinding.FragmentProductCategoryBinding
 import com.zaky.agrocare.ui.cart.CartViewModel
-import com.zaky.agrocare.ui.home.HomeViewModel
-import com.zaky.agrocare.ui.home.HomeViewModelFactory
 import com.zaky.agrocare.ui.home.ProductAdapter
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class ProductCategoryFragment : Fragment() {
 
@@ -55,26 +55,30 @@ class ProductCategoryFragment : Fragment() {
     }
 
     private fun setupRecyclerView() {
-        // Inisialisasi HomeViewModel untuk mendapatkan data lengkap
-        val database = AppDatabase.getDatabase(requireContext(), viewLifecycleOwner.lifecycleScope)
-        val factory = HomeViewModelFactory(database.productDao())
-        val homeViewModel = ViewModelProvider(this, factory).get(HomeViewModel::class.java)
-
-        // Tentukan list produk berdasarkan kategori
-        if (args.title == "Semua Produk") {
-            // Mengambil semua produk dari ViewModel (Hardcode + Database)
-            homeViewModel.allProducts.observe(viewLifecycleOwner) { products ->
-                updateAdapter(products)
+        viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
+            val entities = FirebaseRepository.getAllProducts()
+            
+            // Map Entity ke Product model
+            val allProducts = entities.map { entity ->
+                Product(
+                    id = entity.id,
+                    name = entity.name,
+                    price = "Rp ${entity.price}",
+                    imageUrl = entity.imageName
+                )
             }
-        } else {
-            // Filter manual untuk kategori Bibit atau Pupuk (Hardcode)
-            val filteredProducts = if (args.title.contains("Benih", ignoreCase = true) || args.title.contains("Bibit", ignoreCase = true)) {
+
+            val filteredProducts = if (args.title == "Semua Produk") {
+                allProducts
+            } else if (args.title.contains("Benih", ignoreCase = true) || args.title.contains("Bibit", ignoreCase = true)) {
+                // Hardcode untuk produk bibit
                 listOf(
                     Product(2, "Bibit Cabai Rawit Unggul", "Rp 15.000", "https://picsum.photos/seed/chili/400/300"),
                     Product(4, "Bibit Padi Inpari 32", "Rp 85.000", "https://picsum.photos/seed/rice/400/300"),
                     Product(6, "Benih Jagung Hibrida", "Rp 60.000", "https://picsum.photos/seed/corn/400/300")
                 )
             } else if (args.title.contains("Pupuk", ignoreCase = true)) {
+                // Hardcode untuk produk pupuk
                 listOf(
                     Product(3, "Pupuk Kompos Premium 5kg", "Rp 45.000", "https://picsum.photos/seed/fertilizer/400/300"),
                     Product(5, "Pupuk Kandang Premium", "Rp 12.000", "https://picsum.photos/seed/sprayer/400/300"),
@@ -83,7 +87,10 @@ class ProductCategoryFragment : Fragment() {
             } else {
                 emptyList()
             }
-            updateAdapter(filteredProducts)
+            
+            withContext(Dispatchers.Main) {
+                updateAdapter(filteredProducts)
+            }
         }
     }
 

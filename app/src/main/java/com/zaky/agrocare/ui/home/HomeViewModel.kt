@@ -2,14 +2,14 @@ package com.zaky.agrocare.ui.home
 
 import androidx.lifecycle.*
 import com.zaky.agrocare.data.Product
-import com.zaky.agrocare.data.local.ProductDao
-import kotlinx.coroutines.Dispatchers
+import com.zaky.agrocare.data.remote.FirebaseRepository
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
+import java.util.Locale
 
-class HomeViewModel(private val dao: ProductDao) : ViewModel() {
+class HomeViewModel : ViewModel() {
 
+    // Daftar produk hardcode sebagai cadangan
     private val hardcodedProducts = listOf(
         Product(1, "Tomat Merah Segar Organik", "Rp 25.000", "https://picsum.photos/seed/tomato/400/300"),
         Product(2, "Bibit Cabai Rawit Unggul", "Rp 15.000", "https://picsum.photos/seed/chili/400/300"),
@@ -20,35 +20,33 @@ class HomeViewModel(private val dao: ProductDao) : ViewModel() {
         Product(7, "Pupuk Organik Cair (POC)", "Rp 40.000", "https://picsum.photos/seed/corn/400/300")
     )
 
-    // Semua produk (Hardcode + Database)
-    val allProducts: LiveData<List<Product>> = dao.getAllProducts().map { entities ->
-        val dbProducts = entities.map { entity ->
-            Product(
-                id = entity.id,
-                name = entity.name,
-                price = "Rp " + String.format("%,d", entity.price).replace(',', '.'),
-                imageUrl = entity.imageName
-            )
-        }
-        hardcodedProducts + dbProducts
-    }.asLiveData()
+    private val _allProducts = MutableLiveData<List<Product>>()
+    val allProducts: LiveData<List<Product>> = _allProducts
 
-    // Produk untuk tampilan Home (Dibatasi 4 saja)
-    val homeProducts: LiveData<List<Product>> = allProducts.map { it.take(4) }
+    private val _homeProducts = MutableLiveData<List<Product>>()
+    val homeProducts: LiveData<List<Product>> = _homeProducts
 
     init {
-        viewModelScope.launch(Dispatchers.IO) {
-            dao.getAllProducts().first()
-        }
+        fetchProducts()
     }
-}
 
-class HomeViewModelFactory(private val dao: ProductDao) : ViewModelProvider.Factory {
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(HomeViewModel::class.java)) {
-            @Suppress("UNCHECKED_CAST")
-            return HomeViewModel(dao) as T
+    private fun fetchProducts() {
+        viewModelScope.launch {
+            val dbEntities = FirebaseRepository.getAllProducts()
+            val dbProducts = dbEntities.map { entity ->
+                Product(
+                    id = entity.id,
+                    name = entity.name,
+                    price = "Rp " + String.format(Locale("id", "ID"), "%,d", entity.price).replace(',', '.'),
+                    imageUrl = entity.imageName
+                )
+            }
+            
+            // Gabungkan produk Hardcode dan Database
+            val combinedProducts = hardcodedProducts + dbProducts
+            
+            _allProducts.value = combinedProducts
+            _homeProducts.value = combinedProducts.take(4)
         }
-        throw IllegalArgumentException("Unknown ViewModel class")
     }
 }

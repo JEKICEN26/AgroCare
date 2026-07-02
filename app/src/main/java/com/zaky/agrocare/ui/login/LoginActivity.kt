@@ -58,11 +58,8 @@ class LoginActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            val database = AppDatabase.getDatabase(this, lifecycleScope)
-            val userDao = database.userDao()
-
             lifecycleScope.launch(Dispatchers.IO) {
-                val user = userDao.getUserByUsername(username)
+                val user = com.zaky.agrocare.data.remote.FirebaseRepository.getUserByUsername(username)
                 withContext(Dispatchers.Main) {
                     if (user != null && user.passwordHash == password) {
                         // Simpan data login ke session

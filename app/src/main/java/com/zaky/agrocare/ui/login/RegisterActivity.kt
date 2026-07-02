@@ -46,27 +46,27 @@ class RegisterActivity : AppCompatActivity() {
             return
         }
 
-        val database = AppDatabase.getDatabase(this, lifecycleScope)
-        val userDao = database.userDao()
-
         lifecycleScope.launch(Dispatchers.IO) {
-            val exists = userDao.checkUsernameExists(username) > 0
-            if (exists) {
-                withContext(Dispatchers.Main) {
-                    Toast.makeText(this@RegisterActivity, "Username sudah terdaftar!", Toast.LENGTH_SHORT).show()
-                }
-            } else {
-                val newUser = UserEntity(
-                    username = username,
-                    email = email,
-                    phone = phone,
-                    passwordHash = password // Sebaiknya dihash di app sesungguhnya
-                )
-                userDao.insertUser(newUser)
-                
-                withContext(Dispatchers.Main) {
-                    Toast.makeText(this@RegisterActivity, "Registrasi berhasil! Silakan login.", Toast.LENGTH_SHORT).show()
-                    finish() // Kembali ke layar login
+            val usernameExists = com.zaky.agrocare.data.remote.FirebaseRepository.checkUsernameExists(username)
+
+            withContext(Dispatchers.Main) {
+                if (usernameExists) {
+                    Toast.makeText(this@RegisterActivity, "Username sudah digunakan", Toast.LENGTH_SHORT).show()
+                } else {
+                    val newUser = com.zaky.agrocare.data.local.UserEntity(
+                        username = username,
+                        email = email,
+                        phone = phone,
+                        passwordHash = password
+                    )
+                    
+                    lifecycleScope.launch(Dispatchers.IO) {
+                        com.zaky.agrocare.data.remote.FirebaseRepository.saveUser(newUser)
+                        withContext(Dispatchers.Main) {
+                            Toast.makeText(this@RegisterActivity, "Registrasi Berhasil", Toast.LENGTH_SHORT).show()
+                            finish()
+                        }
+                    }
                 }
             }
         }
