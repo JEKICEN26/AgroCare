@@ -13,6 +13,8 @@ class SessionManager(context: Context) {
         private const val KEY_PHONE = "user_phone"
         private const val KEY_PASSWORD = "user_password"
         private const val KEY_PROFILE_IMAGE = "user_profile_image"
+        private const val KEY_LOGIN_TYPE = "login_type" // "local" atau "google"
+        private const val KEY_GOOGLE_UID = "google_uid"
     }
 
     fun setLogin(isLoggedIn: Boolean) {
@@ -21,6 +23,22 @@ class SessionManager(context: Context) {
 
     fun isLoggedIn(): Boolean {
         return prefs.getBoolean(KEY_IS_LOGGED_IN, false)
+    }
+
+    fun setLoginType(type: String) {
+        prefs.edit().putString(KEY_LOGIN_TYPE, type).apply()
+    }
+
+    fun getLoginType(): String {
+        return prefs.getString(KEY_LOGIN_TYPE, "local") ?: "local"
+    }
+
+    fun setGoogleUid(uid: String) {
+        prefs.edit().putString(KEY_GOOGLE_UID, uid).apply()
+    }
+
+    fun getGoogleUid(): String? {
+        return prefs.getString(KEY_GOOGLE_UID, null)
     }
 
     fun saveProfileData(name: String, email: String, phone: String) {

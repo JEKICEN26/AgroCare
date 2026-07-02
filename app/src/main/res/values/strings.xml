@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">AgroCare</string>
+    <string name="default_web_client_id">481923935805-GANTI_DENGAN_WEB_CLIENT_ID_ANDA.apps.googleusercontent.com</string>
 </resources>

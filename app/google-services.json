@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "481923935805",
+    "project_id": "login-app-agrocare",
+    "storage_bucket": "login-app-agrocare.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:481923935805:android:12ae4eb6b734c7de288454",
+        "android_client_info": {
+          "package_name": "com.zaky.agrocare"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "481923935805-so7rq9skm0v5mfpa9avgj869n86ntmlc.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.zaky.agrocare",
+            "certificate_hash": "90e42d289057b35054becffab7467e1095a3e239"
+          }
+        },
+        {
+          "client_id": "481923935805-pirscg8spi8pe7bvsdjmhn6m1ida1icv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB8JB95XzuamCc0biXtQWU8VUWzGTixVXw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "481923935805-pirscg8spi8pe7bvsdjmhn6m1ida1icv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
